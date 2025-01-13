@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+@await Component.InvokeAsync("_UILayoutHeadComponent")
+
+<body>
+
+    <div id="preloader">
+        <div class="dorne-load"></div>
+    </div>
+
+    @await Component.InvokeAsync("_UILayoutMemberNavbarComponent")
+
+
+    <section class="dorne-about-area section-padding-0-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" style="margin-top:80px;">
+                    <div class="about-content text-center">
+                        @RenderBody()
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    @await Component.InvokeAsync("_UILayoutFooterComponent")
+
+    @await Component.InvokeAsync("_UILayoutScriptComponent")
+
+
+
+
+
+
+</body>
+
+</html>

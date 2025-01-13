@@ -1,0 +1,75 @@
+﻿@using EntityLayer.Concrete;  
+@model List<EventWithPriceViewModel>
+
+<section class="dorne-features-destinations-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading dark text-center">
+                    <h4>Popüler Etkinlikler</h4>
+                    <p>Editörün Seçimi</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="row d-flex  justify-content-center align-items-center">
+                    @foreach (var eventItem in Model.Take(5))
+                    {
+                        <div class="single-features-area">
+                            <img src="@eventItem.EventImageUrl" alt="@eventItem.EventName" class="event-img">
+                            <div class="price-start">
+                                <p>@eventItem.Price ₺'den başlayan fiyatlarla</p>
+                            </div>
+                            <div class="feature-content d-flex align-items-center justify-content-between">
+                                <div class="feature-title">
+                                    <h5>@eventItem.EventName</h5>
+                                    <p>@eventItem.CategoryName</p>
+                                </div>
+                                <div class="feature-favourite">
+                                    <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .single-features-area {
+        width: 246px;
+        height: 366px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin: 10px;
+    }
+
+        .single-features-area img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+    .price-start {
+        padding: 10px;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .feature-content {
+        padding: 10px;
+    }
+
+    .event-img {
+        width: 246px;
+        height: 200px;
+        object-fit: cover;
+    }
+</style>

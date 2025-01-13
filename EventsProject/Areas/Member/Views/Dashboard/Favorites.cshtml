@@ -1,0 +1,53 @@
+﻿@using EntityLayer.Concrete;
+@model List<EntityLayer.Concrete.Event>
+
+
+@{
+    ViewData["Title"] = "Favorilerim";
+    Layout = "~/Areas/Member/Views/Shared/_MemberDashboardLayout.cshtml";
+}
+
+<h1 class="modern-heading">Favorilerim</h1>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="single-features-area mb-50" style="width:340px;height:500px; margin-top: 110px;">
+                    
+                    <!-- Etkinliğe tıklanabilir bağlantı -->
+                    <a href="@Url.Action("Details", "Dashboard", new {area = "Member" , id = item.EventId })" style="text-decoration: none; color: inherit;">
+                        <img src="@item.ImageUrl" style="width:340px;height:300px;" alt="@item.Title">
+                        <div class="price-start">
+                            <p>@item.EventDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+                        </div>
+                        <div class="feature-content d-flex align-items-center justify-content-between">
+                            <div class="feature-title">
+                                <h5>@item.Title</h5>
+                                <p>@item.Location</p>
+                                <p><strong>@item.Category.Name</strong> | @item.Artist.Name</p> <!-- Kategori ve Sanatçı Bilgisi -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Favorileriniz henüz yok.</p>
+}
+<style>
+    .modern-heading {
+        margin-top: 200px; /* Daha aşağıda konumlandır */
+        font-family: 'Roboto', sans-serif; /* Modern bir font ailesi kullan */
+        font-size: 36px; /* Yazı boyutunu büyüt */
+        font-weight: 700; /* Kalınlık ayarı */
+        color: #333; /* Yazı rengi */
+        text-align: center; /* Ortala */
+        letter-spacing: 1px; /* Harf aralığı */
+    }
+</style>

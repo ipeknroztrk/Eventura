@@ -1,0 +1,182 @@
+﻿<!-- ** Search Form Area ** -->
+<div class="dorne-search-form d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="search-close-btn" id="closeBtn">
+                    <i class="pe-7s-close-circle" aria-hidden="true"></i>
+                </div>
+                <form action="#" method="get">
+                    <input type="search" name="caviarSearch" id="search">
+                    <input type="submit" class="d-none" value="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ** Header Area Start ** -->
+<header class="header_area" id="header">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-12 h-100">
+                <nav class="h-100 navbar navbar-expand-lg">
+                    <a class="navbar-brand" href="index.html"><img src="#" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dorneNav" aria-controls="dorneNav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars"></span></button>
+                    <!-- Nav -->
+                    <div class="collapse navbar-collapse" id="dorneNav">
+                        <ul class="navbar-nav mr-auto" id="dorneMenu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Index" aria-haspopup="true" aria-expanded="false">Ana Sayfa </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Concert/Index">Konser </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Theater/Index">Tiyatro</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Stand_Up/Index">Stand-Up</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/KidsEvent/Index">Çocuk Aktiviteleri</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Festival/Index">Festival</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Contact/Index">İletişim</a>
+                            </li>
+                        </ul>
+                       
+
+
+                        <div class="dorne-add-listings-btn">
+                            <a href="javascript:void(0);" class="user-icon" onclick="toggleDropdown()">
+                                <i class="fa fa-user-circle" style="color: white; font-size: 32px;"></i> <!-- Beyaz Font Awesome ikonu -->
+                            </a>
+                            <!-- Dropdown Menü -->
+                            <div id="dropdownMenu" class="dropdown-content">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="@Url.Action("Index", "Dashboard", new { area = "Member" })">Hoş geldin, @User.Identity.Name</a>
+                                    <a href="@Url.Action("Index", "Dashboard", new { area = "Member" })">Hesabım</a>
+                                    <a href="@Url.Action("Logout", "Login", new { area = "Member" })">Çıkış Yap</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("SignIn", "Login", new { area = "Member" })">Kullanıcı Girişi</a>
+                                    <a href="@Url.Action("Index", "Login", new { area = "Admin" })">Admin Girişi</a>
+                                }
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<style>
+
+    .user-icon {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 70px;
+        height: 70px;
+        background: transparent;
+        border: none;
+        outline: none;
+        transition: transform 0.3s;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+    }
+
+        .user-icon:hover {
+            transform: scale(1.2); /* Üzerine gelince büyüme efekti */
+        }
+
+        .user-icon i {
+            font-size: 32px; /* Font Awesome ikon boyutu */
+            color: white; /* İkonun beyaz olması */
+        }
+
+        .user-icon:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .user-icon:active {
+            outline: none;
+        }
+
+    /* Dropdown Menüsü */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+    /* Dropdown Menü gösterme */
+    .dorne-add-listings-btn:hover .dropdown-content {
+        display: block;
+    }
+</style>
+
+
+
+
+
+<script>
+    function searchEvents() {
+        var query = document.getElementById('eventSearch').value;
+
+        // 3 harften az ise öneri gösterme
+        if (query.length < 3) {
+            document.getElementById('eventSuggestions').innerHTML = '';
+            return;
+        }
+
+        $.ajax({
+            url: '/Search/SearchEvents',  // Core'da url direkt olarak Action ile belirtilir
+            type: 'GET',
+            data: { query: query },
+            success: function (data) {
+                var suggestionsHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (item) {
+                        suggestionsHtml += '<div class="suggestion-item" onclick="selectEvent(\'' + item.EventId + '\')">' + item.Title + ' (' + item.Category + ')</div>';
+                    });
+                    document.getElementById('eventSuggestions').innerHTML = suggestionsHtml;
+                } else {
+                    document.getElementById('eventSuggestions').innerHTML = '<div>No events found</div>';
+                }
+            },
+            error: function () {
+                console.log('Error occurred while fetching events.');
+            }
+        });
+    }
+
+    function selectEvent(eventId) {
+        window.location.href = '/Search/Results?query=' + eventId;
+    }
+
+</script>

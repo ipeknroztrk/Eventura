@@ -1,0 +1,80 @@
+﻿<section class="dorne-features-restaurant-area bg-default" style="background-image: url('/dorne-master/img/about-us-header-background.jpg'); background-size: cover; background-position: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <span></span>
+                    <h4>Sanatçılar</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="features-slides owl-carousel">
+                    @foreach (var artist in Model)
+                    {
+                        <div class="single-features-area">
+                            <img src="@artist.ImageUrl" alt="@artist.Name">
+
+                            <div class="feature-content d-flex align-items-center justify-content-between">
+                                <div class="feature-title">
+                                    <h5>@artist.Name</h5>
+                                    <p>@artist.Bio</p>
+                                </div>
+                                <div class="feature-favourite">
+                                    <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .features-slides {
+            position: relative;
+        }
+
+        .single-features-area {
+            text-align: center;
+            margin-right: 15px; /* Her öğe arasında boşluk */
+        }
+
+            .single-features-area img {
+                width: 100%; /* Resmin tam genişlikte olmasını sağlar */
+                
+            }
+    </style>
+</section>
+
+<!-- Owl Carousel JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.features-slides').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        });
+    });
+</script>
+
+<!-- Owl Carousel CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />

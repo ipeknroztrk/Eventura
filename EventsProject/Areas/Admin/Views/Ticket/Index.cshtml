@@ -1,0 +1,165 @@
+﻿@model IEnumerable<EntityLayer.Concrete.EventsTickets>
+
+@{
+    ViewData["Title"] = "Etkinlik Biletleri";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 1200px;
+        margin: 20px 0;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .btn-primary {
+        color: #fff;
+        text-decoration: none;
+        background-color: #007bff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+    }
+
+        table th, table td {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+
+    .action-icons a {
+        margin-right: 8px;
+        text-decoration: none;
+    }
+
+    .action-icons i {
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Etkinlik Biletleri Yönetimi</h5>
+            <a href="@Url.Action("Create", "Ticket", new { area = "Admin" })" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Yeni Bilet Ekle
+            </a>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Bilet ID</th>
+                        <th>Etkinlik Başlığı</th>
+                        
+                        <th>Bilet Kapasitesi</th>
+                        <th>Satılan Adet</th>
+                        <th>Fiyat</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var ticket in Model)
+                        {
+                            <tr>
+                                <td>@ticket.EventsTicketId</td>
+                                <td>@(string.IsNullOrEmpty(ticket.EventTitle) ? "Yok" : ticket.EventTitle)</td>
+                                
+                                <td>@ticket.TicketCapacity</td>
+                                <td>@ticket.SoldCount</td>
+                                <td>@ticket.Price.ToString("C")</td>
+                                <td class="action-icons">
+                                    <a href="@Url.Action("Details", "Ticket", new { id = ticket.EventsTicketId, area = "Admin" })" title="Detaylar">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="@Url.Action("Edit", "Ticket", new { id = ticket.EventsTicketId, area = "Admin" })" title="Düzenle">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(@ticket.EventsTicketId)" title="Sil">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center">Hiç etkinlik bileti bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Onay Modalı -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Bilet Silme Onayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bu etkinlik biletini silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modalda seçilen ID'yi formun içine yerleştirir
+    function setDeleteId(id) {
+        var form = document.getElementById('deleteForm');
+        form.action = '/Admin/Ticket/Delete/' + id;
+    }
+</script>

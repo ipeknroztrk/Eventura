@@ -1,0 +1,28 @@
+﻿@using EntityLayer.Concrete
+@model Artist
+
+@{
+    ViewData["Title"] = "Sanatçı Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" asp-controller="Artist" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="ArtistId" value="@Model.ArtistId" />
+    <div class="form-group">
+        <label for="Name">İsim</label>
+        <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="Bio">Biyografi</label>
+        <textarea id="Bio" name="Bio" class="form-control" required>@Model.Bio</textarea>
+    </div>
+    <div class="form-group">
+        <label for="ImageUrl">Resim URL'si</label>
+        <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" value="@Model.ImageUrl" />
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>
+

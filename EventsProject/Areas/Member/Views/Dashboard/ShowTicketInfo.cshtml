@@ -1,0 +1,49 @@
+﻿@model EventsProject.Areas.Member.Models.TicketInfoViewModel
+
+@{
+    ViewData["Title"] = "Ticket Information";
+}
+
+<div class="ticket-info-container">
+    <h2>Event Information</h2>
+
+    <p><strong>Thank you for choosing Eventura!</strong></p>
+
+    <p>Your ticket for the event <strong>@Model.EventName</strong> is confirmed!</p>
+
+    <p><strong>Event Date:</strong> @Model.EventDate.ToString("dddd, dd MMMM yyyy, HH:mm")</p>
+
+    <p><strong>Ticket Number:</strong> @Model.TicketNumber</p>
+
+    <p><strong>Purchased by:</strong> @Model.UserName</p>
+
+    <div class="thank-you-message">
+        <p>We appreciate your choice and look forward to seeing you at the event!</p>
+    </div>
+</div>
+
+<!-- Style for the ticket info page -->
+<style>
+    .ticket-info-container {
+        margin-top: 20px;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        text-align: center;
+    }
+
+    h2 {
+        color: #3D71E9;
+    }
+
+    p {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .thank-you-message {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 20px;
+        color: #4CAF50;
+    }
+</style>

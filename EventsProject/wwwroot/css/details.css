@@ -1,0 +1,196 @@
+﻿
+
+.modal-content {
+    border-radius: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    font-weight: bold;
+    font-size: 20px;
+    color: #333;
+}
+
+#paymentCardPreview {
+    background: linear-gradient(135deg, #222831, #393E46);
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+    #paymentCardPreview .card-number {
+        font-size: 18px;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+    }
+
+    #paymentCardPreview .card-holder,
+    #paymentCardPreview .expires {
+        font-size: 14px;
+        opacity: 0.8;
+    }
+
+    #paymentCardPreview .card-logo {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        height: 40px;
+    }
+
+.btn-success {
+    background-color: #5e72e4;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+    .btn-success:hover {
+        background-color: #4a60d2;
+    }
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.event-detail-container {
+    display: flex;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+.event-detail-wrapper {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Event Image */
+.event-image {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+}
+
+    .event-image img {
+        width: 100%;
+        height: auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+/* Event Content */
+.event-content {
+    flex: 1;
+    max-width: 700px;
+}
+
+.event-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    color: rgba(139, 0, 0, 0.99);
+    margin-bottom: 20px;
+}
+
+.event-overview {
+    margin-bottom: 30px;
+}
+
+.event-description, .event-details {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.event-date {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(139, 0, 0, 0.99);
+    margin-top: 20px;
+}
+
+.event-location {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.event-map {
+    margin-top: 20px;
+}
+
+    .event-map iframe {
+        border-radius: 8px;
+    }
+
+/* Sidebar */
+.event-sidebar {
+    width: 100%;
+    max-width: 350px;
+}
+
+.listing-verify {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Giriş Yap ve Bilet Al Button */
+.btn-login, .btn-buy {
+    background-color: rgba(139, 0, 0, 0.99);
+    color: #fff;
+    font-size: 18px;
+    padding: 15px;
+    text-align: center;
+    margin-top: 15px;
+    width: 100%;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-login:hover, .btn-buy:hover {
+        background-color: rgba(139, 0, 0, 0.75);
+    }
+
+/* Opening Hours Widget */
+.opening-hours-widget {
+    background-color: rgba(139, 0, 0, 0.99);
+    padding: 15px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+    .opening-hours-widget h6 {
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .opening-hours-widget .opening-hours {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+    }
+
+        .opening-hours-widget .opening-hours li p {
+            color: white;
+        }
+
+

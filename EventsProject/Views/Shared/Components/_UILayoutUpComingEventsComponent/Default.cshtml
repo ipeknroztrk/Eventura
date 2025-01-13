@@ -1,0 +1,124 @@
+﻿@model IEnumerable<EntityLayer.Concrete.Event>
+
+<section class="dorne-editors-pick-area section-padding-100" style="background-image: url('https://i.hizliresim.com/narq5kq.jpg'); background-size: cover; background-position: center;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <span></span>
+                    <h4>Yaklaşan Etkinlikler</h4>
+                    <p>Editor’ün Seçimi</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="upcomingEventsCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < Model.Count(); i += 4)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="row justify-content-center">
+                            <!-- 1. Satır: İlk 2 etkinlik -->
+                            <div class="col-12 col-sm-6 col-md-6 mb-4 text-center">
+                                @for (int j = i; j < i + 2 && j < Model.Count(); j++)
+                                {
+                                    var eventItem = Model.ElementAt(j);
+                                    <div class="single-editors-pick-area wow fadeInUp" data-wow-delay="0.4s">
+                                        <img src="@eventItem.ImageUrl" alt="Etkinlik Resmi">
+                                        <div class="editors-pick-info">
+                                            <div class="places-total-destinations d-flex">
+                                                <a href="#">@eventItem.Title</a>
+                                                <a href="#">@eventItem.EventDate.ToString("dd MMMM yyyy")</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- 2. Satır: Sonraki 2 etkinlik -->
+                            <div class="col-12 col-sm-6 col-md-6 mb-4 text-center">
+                                @for (int j = i + 2; j < i + 4 && j < Model.Count(); j++)
+                                {
+                                    var eventItem = Model.ElementAt(j);
+                                    <div class="single-editors-pick-area wow fadeInUp" data-wow-delay="0.4s">
+                                        <img src="@eventItem.ImageUrl" alt="Etkinlik Resmi">
+                                        <div class="editors-pick-info">
+                                            <div class="places-total-destinations d-flex">
+                                                <a href="#">@eventItem.Title</a>
+                                                <a href="#">@eventItem.EventDate.ToString("dd MMMM yyyy")</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Önceki ve Sonraki Butonlar -->
+            <a class="carousel-control-prev" href="#upcomingEventsCarousel" role="button" data-slide="prev" style="margin-left: -50px; z-index: 10;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Önceki</span>
+            </a>
+            <a class="carousel-control-next" href="#upcomingEventsCarousel" role="button" data-slide="next" style="margin-right: -50px; z-index: 10;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Sonraki</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .single-editors-pick-area {
+        width: 500px;
+        height: 300px;
+        padding: 10px;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .single-editors-pick-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .places-total-destinations {
+        font-size: 1.2vw; /* Yazı boyutunu viewport'a göre dinamik yap */
+        white-space: nowrap; /* Tek satırda tut */
+        overflow: hidden; /* Taşan yazıyı gizle */
+        text-overflow: ellipsis; /* Taşan kısmı '...' ile göster */
+        display: block; /* Satır sonu eklemek için */
+        max-width: 100%; /* Kutu genişliğini aşmasın */
+        line-height: 1.2; /* Satır yüksekliğini ayarlayarak yazıyı sıkıştır */
+        font-weight: 600; /* Yazı kalınlığı */
+        color: #fff; /* Yazı rengini beyaz yap */
+    }
+
+    .event-details {
+        display: flex;
+        align-items: center;
+        width: 100%; /* Kutu genişliğini %100 yap */
+        height: 40px;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam bir arka plan */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        position: absolute;
+        bottom: 10px; /* Resmin alt kısmına yakın */
+        left: 10px;
+        right: 10px;
+    }
+
+
+    /* Okları resimlerin dışında konumlandır */
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 50px; /* Ok genişliği */
+        height: 50px; /* Ok yüksekliği */
+        top: 50%; /* Yükseklik ortalama */
+        transform: translateY(-50%); /* Dikey ortalama */
+    }
+</style>

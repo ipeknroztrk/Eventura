@@ -1,0 +1,256 @@
+﻿@model IEnumerable<EntityLayer.Concrete.SavedCard>
+@{
+    ViewData["Title"] = "Kartlarım";
+    Layout = "~/Areas/Member/Views/Shared/_MemberDashboardLayout.cshtml";
+}
+
+<h1 class="modern-heading">Kaydedilen Kartlarım</h1>
+
+<!-- Success Message -->
+@if (TempData["CardAdded"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["CardAdded"]
+    </div>
+}
+
+<div class="row mt-4">
+    @foreach (var card in Model)
+    {
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm card-compact">
+                <div class="card-body">
+                    <div id="paymentCardPreview" class="payment-card-preview">
+                        <div class="card-number" id="cardNumberPreview">**** **** **** @card.CardNumber.Substring(@card.CardNumber.Length - 4)</div>
+                        <div class="card-holder" id="cardHolderNamePreview">@card.CardHolderName</div>
+                        <div class="expires">Expires: <span id="expiryDatePreview">@card.ExpiryDate.ToString("MM/yyyy")</span></div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" class="card-logo" alt="Card Logo" />
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    }
+</div>
+
+<div class="settings-container">
+    <!-- Yeni Kart Ekle -->
+    <div class="card mb-4">
+        <div class="card-header">Yeni Kart Ekle</div>
+        <div class="card-body">
+            <form id="addCardForm" method="post" action="@Url.Action("AddSavedCard", "Dashboard", new { area = "Member" })">
+                <div class="form-group">
+                    <label for="CardHolderName">Kart Sahibinin Adı</label>
+                    <input type="text" id="CardHolderName" name="CardHolderName" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="CardNumber">Kart Numarası</label>
+                    <input type="text" id="CardNumber" name="CardNumber" class="form-control" oninput="formatCardNumber(event)" maxlength="19" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="ExpiryDate">Son Kullanma Tarihi</label>
+                    <input type="text" id="ExpiryDate" name="ExpiryDate" class="form-control" oninput="formatExpiryDate(event)" maxlength="5" placeholder="MM/YY" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="CVV">CVV</label>
+                    <input type="text" id="CVV" name="CVV" class="form-control" maxlength="3" required />
+                </div>
+
+                <button type="submit" class="button-87" role="button">Kartı Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#addCardForm').on('submit', function (event) {
+            event.preventDefault();  // Formun varsayılan submit işlemini engelle
+
+            // Form verilerini al
+            var formData = {
+                cardHolderName: $('#CardHolderName').val(),
+                cardNumber: $('#CardNumber').val(),
+                expiryDate: $('#ExpiryDate').val(),  // Burada tarihi doğrudan alıyoruz (MM/YY formatında)
+                cvv: $('#CVV').val()
+            };
+
+            // AJAX ile veriyi gönder
+            $.ajax({
+                url: '@Url.Action("AddSavedCard", "Dashboard", new { area = "Member" })',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        // Kart başarıyla kaydedildiyse, SavedCards sayfasına yönlendir
+                        window.location.href = response.redirectTo;
+                    } else {
+                        alert(response.message);  // Hata mesajını göster
+                    }
+                },
+                error: function () {
+                    alert('Kart kaydetme işlemi sırasında bir hata oluştu.');
+                }
+            });
+        });
+    });
+
+    // Kart numarasını 4-4-4-4 formatında düzenleyen fonksiyon
+    function formatCardNumber(event) {
+        let input = event.target;
+        let value = input.value.replace(/\D/g, ''); // Sayılardan başka her şeyi sil
+        if (value.length > 16) {
+            value = value.substring(0, 16); // 16 haneli karta izin ver
+        }
+        let formattedValue = '';
+        for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                formattedValue += ' '; // 4 rakamda bir boşluk ekle
+            }
+            formattedValue += value[i];
+        }
+        input.value = formattedValue;
+    }
+
+    // Son Kullanma Tarihini "MM/YY" formatına getiren fonksiyon
+    function formatExpiryDate(event) {
+        let value = event.target.value.replace(/\D/g, ''); // Sadece rakamları al
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4); // MM/YY formatı
+        }
+        event.target.value = value; // Input alanını güncelle
+    }
+</script>
+<style>
+
+    /* Aralar için boşluklar */
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .settings-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff; /* Beyaz arkaplan */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Kutu gölgesi */
+        border-radius: 12px; /* Yuvarlak köşeler */
+    }
+
+    /* Küçük boyutlu buton tasarımı */
+    .button-small {
+        background-color: #5a67d8;
+        color: #fff;
+        border: none;
+        padding: 6px 12px; /* Daha küçük iç boşluklar */
+        border-radius: 4px; /* Hafif yuvarlatılmış köşeler */
+        font-size: 12px; /* Daha küçük yazı boyutu */
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+        .button-small:hover {
+            background-color: #434190;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Hafif hover efekti */
+        }
+    .modern-heading {
+        margin-top: 200px; /* Daha aşağıda konumlandır */
+        font-family: 'Roboto', sans-serif; /* Modern bir font ailesi kullan */
+        font-size: 36px; /* Yazı boyutunu büyüt */
+        font-weight: 700; /* Kalınlık ayarı */
+        color: #333; /* Yazı rengi */
+        text-align: center; /* Ortala */
+        letter-spacing: 1px; /* Harf aralığı */ }
+
+
+        .button-87
+
+    {
+        margin: 10px;
+        padding: 15px 30px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        border-radius: 10px;
+        display: block;
+        border: 0px;
+        font-weight: 700;
+        box-shadow: 0px 0px 14px -7px #a60000; /* Koyu kırmızı tonunda gölge */
+        background-image: linear-gradient(45deg, #B71C1C 0%, #D32F2F 51%, #B71C1C 100%); /* Koyu kırmızı renkler */
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        width: 200px; /* Butonun genişliğini sınırlayarak ortalamayı kolaylaştırabilirsiniz */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button-87:hover {
+        background-position: right center;
+        /* change the direction of the change here */
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .button-87:active {
+        transform: scale(0.95);
+    }
+    }
+    /* Genel kart ayarları */
+    .card-compact {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .card-compact:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .payment-card-preview {
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        padding: 15px;
+        border-radius: 8px;
+        color: #fff;
+        text-align: left;
+        font-size: 14px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+        position: relative;
+    }
+
+        .payment-card-preview .card-number {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .payment-card-preview .card-holder {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .payment-card-preview .expires {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .payment-card-preview .card-logo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            opacity: 0.8;
+        }
+</style>

@@ -1,0 +1,379 @@
+﻿@using EntityLayer.Concrete;
+@model Event
+
+@{
+    ViewData["Title"] = "Etkinlik Detayları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/details.css">
+
+
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="dorne-load"></div>
+    </div>
+
+    <section class="event-detail-section py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Sol Kolon: Resim -->
+                <div class="col-lg-5 mb-4">
+                    <div class="event-image-container">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="Event Image" class="img-fluid rounded shadow">
+                        }
+                        <!-- Sidebar and Buy Ticket -->
+                        <div class="event-sidebar">
+                            <div class="listing-sidebar">
+
+                                <div class="listing-verify">
+                                    <!-- Giriş Yap ve Bilet Al Butonu -->
+                                    <!-- Giriş Yap ve Bilet Al Butonu -->
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <button class="btn dorne-btn w-100 opening-hours-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#paymentModal"
+                                                data-eventid="@Model.EventId"
+                                                data-price="@ViewBag.TicketPrice">
+                                            <!-- Fiyatı data-price olarak ekliyoruz -->
+                                            <i class="fa fa-check pr-3"></i> Bilet Al (@ViewBag.TicketPrice.ToString("C"))
+                                        </button>
+
+
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("SignIn", "Login", new { area = "Member" })" class="btn dorne-btn w-100">
+                                            <i class="fa fa-sign-in pr-3"></i> Giriş Yap ve Bilet Al
+                                        </a>
+                                    }
+
+                                </div>
+
+                                <!-- Opening Hours Widget -->
+                                <div class="opening-hours-widget mt-3">
+                                    <h6 style="color:white">Açılış Saati</h6>
+                                    <ul class="opening-hours text-center">
+                                        <li>
+                                            <p style="color:white">@Model.EventDate.ToString("HH:mm")</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Sağ Kolon: İçerik -->
+                <div class="col-lg-7">
+                    <div class="event-content">
+                        <h2 class="event-title mb-4">@Model.Title</h2>
+
+                        <div class="event-overview mb-4">
+                            <div class="event-description mb-3">@Model.Description</div>
+                            <div class="event-details mb-3">@Model.Details</div>
+                            <div class="event-date">
+                                @Model.EventDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+                            </div>
+                        </div>
+
+                        <div class="event-location mb-4">
+                            <strong>Konum:</strong> @Model.Location
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Harita - Tam Genişlik -->
+                <div class="col-12 mt-4">
+                    <div class="map-container">
+                        <h3 class="mb-3">Haritada Göster</h3>
+                        @if (!string.IsNullOrEmpty(Model.LocationUrl))
+                        {
+                            <div class="ratio ratio-16x9">
+                                <iframe src="@Model.LocationUrl" allowfullscreen="" loading="lazy"></iframe>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>Harita bulunamadı.</p>
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+    </section>
+
+    <!-- Ödeme Modalı -->
+    <!-- Ödeme Modalı -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Ödeme</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Kart Görünümü -->
+                    <div id="paymentCardPreview">
+                        <div class="card-number" id="cardNumberPreview">**** **** **** ****</div>
+                        <div class="card-holder" id="cardHolderNamePreview">Kart Sahibinin Adı</div>
+                        <div class="expires">Expires: <span id="expiryDatePreview">MM/YY</span></div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" class="card-logo" alt="Card Logo">
+                    </div>
+
+                    <!-- Kart Bilgileri Formu -->
+                    <form method="post" action="@Url.Action("SaveCard", "Payment")">
+                        <input type="hidden" name="EventId" value="@Model.EventId" />
+                        <input type="hidden" name="EventTicketId" value="@Model.EventsTicketId" />
+                        <input type="hidden" name="selectedCardId" id="selectedCardId" value="" />
+                        <!-- Kart Sahibinin Adı -->
+                        <div class="mb-3">
+                            <label for="cardHolderName" class="form-label">Kart Sahibinin Adı Soyadı</label>
+                            <input type="text" class="form-control" id="cardHolderName" name="cardHolderName"
+                                   placeholder="Kart Sahibinin Adı Soyadı" required oninput="updateCardPreview()" />
+                        </div>
+
+                        <!-- Kart Numarası -->
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Kart Numarası</label>
+                            <input type="text" class="form-control" id="cardNumber" name="cardNumber"
+                                   placeholder="Kart Numarası (4-4-4-4)" maxlength="19"
+                                   required oninput="formatCardNumber(event); updateCardPreview()" />
+                            <small class="form-text text-muted">Kart numarasını 4-4-4-4 formatında girin.</small>
+                        </div>
+
+                        <!-- Son Kullanma Tarihi -->
+                        <div class="mb-3">
+                            <label for="expiryDate" class="form-label">Son Kullanma Tarihi</label>
+                            <input type="text" class="form-control" id="expiryDate" name="expiryDate"
+                                   placeholder="MM/YY" maxlength="5"
+                                   required oninput="formatExpiryDate(event); updateCardPreview()" />
+                            <small class="form-text text-muted">Son kullanma tarihini MM/YY formatında girin.</small>
+                        </div>
+
+                        <!-- CVV -->
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV (3 haneli)"
+                                   pattern="^\d{3}$" maxlength="3" inputmode="numeric"
+                                   required oninput="updateCardPreview()" />
+                            <small class="form-text text-muted">CVV numarasını 3 haneli olarak girin.</small>
+                        </div>
+
+                        <!-- Kartı Kaydetme Seçeneği -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="true" id="saveCard" name="saveCard">
+                            <label class="form-check-label" for="saveCard">
+                                Kartımı Kaydet
+                            </label>
+                        </div>
+
+                        <!-- Ödeme Butonu -->
+                        <button type="submit" class="btn btn-success w-100 mt-3">Ödemeyi Tamamla</button>
+                    </form>
+                    <!-- Kayıtlı Kartlarla Ödeme Yap Linki -->
+                    <div class="mb-3 text-center">
+                        <a href="javascript:void(0);" class="text-primary" style="text-decoration: underline;" onclick="loadSavedCardModal()">
+                            Kayıtlı Kartlarımla Ödeme Yapmak İstiyorum
+                        </a>
+                    </div>
+
+                    <!-- Kayıtlı Kartlar Modal -->
+                    <div class="modal fade" id="savedCardModal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header border-0 bg-gradient">
+                                    <h5 class="modal-title text-white">
+                                        <i class="fas fa-credit-card me-2"></i>
+                                        Kayıtlı Kartlarınız
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <div id="savedCardsList" class="saved-cards-container">
+                                        <!-- Kartlar buraya dinamik olarak eklenecek -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        /* Modal Styles */
+                        #savedCardModal .modal-content {
+                            border: none;
+                            border-radius: 20px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                            overflow: hidden;
+                        }
+
+                        #savedCardModal .modal-header {
+                            background: linear-gradient(135deg, #dc3545, #ff6b6b);
+                            padding: 20px 30px;
+                        }
+
+                        #savedCardModal .modal-title {
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                        }
+
+                        /* Saved Cards Container */
+                        .saved-cards-container {
+                            max-height: 400px;
+                            overflow-y: auto;
+                            padding: 10px 0;
+                        }
+
+                            .saved-cards-container::-webkit-scrollbar {
+                                width: 8px;
+                            }
+
+                            .saved-cards-container::-webkit-scrollbar-track {
+                                background: #f1f1f1;
+                                border-radius: 10px;
+                            }
+
+                            .saved-cards-container::-webkit-scrollbar-thumb {
+                                background: #dc3545;
+                                border-radius: 10px;
+                            }
+
+                        /* Card Item Styles */
+                        .card.mb-3 {
+                            border: none;
+                            border-radius: 15px;
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                            transition: all 0.3s ease;
+                        }
+
+                            .card.mb-3:hover {
+                                transform: translateY(-3px);
+                                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                            }
+
+                        .card-body {
+                            padding: 20px;
+                        }
+
+                            .card-body div {
+                                margin-bottom: 8px;
+                                color: #495057;
+                                font-size: 0.95rem;
+                            }
+
+                        /* Card Selection Button */
+                        .btn-primary {
+                            background: #dc3545;
+                            border: none;
+                            padding: 12px 25px;
+                            border-radius: 50px;
+                            font-weight: 500;
+                            transition: all 0.3s ease;
+                        }
+
+                            .btn-primary:hover {
+                                background: #c82333;
+                                transform: translateY(-2px);
+                            }
+
+                        /* Empty State */
+                        .no-cards-message {
+                            text-align: center;
+                            padding: 30px 20px;
+                            color: #6c757d;
+                        }
+
+                            .no-cards-message i {
+                                font-size: 3rem;
+                                color: #dc3545;
+                                margin-bottom: 15px;
+                                opacity: 0.5;
+                            }
+
+                        /* Animation */
+                        .modal.fade .modal-dialog {
+                            transform: scale(0.95);
+                            transition: transform 0.3s ease;
+                        }
+
+                        .modal.fade.show .modal-dialog {
+                            transform: scale(1);
+                        }
+
+                        }
+                    </style>
+
+                    <script>
+                        // Kart listesi boş olduğunda gösterilecek mesaj
+                        function showEmptyState() {
+                            return `
+                                <div class="no-cards-message">
+                                    <i class="fas fa-credit-card d-block"></i>
+                                    <p>Henüz kayıtlı kartınız bulunmamaktadır.</p>
+                                </div>
+                            `;
+                        }
+
+                        // Kart listesi render fonksiyonunu güncelle
+                        function renderSavedCards(cards) {
+                            const container = document.getElementById('savedCardsList');
+
+                            if (!cards || cards.length === 0) {
+                                container.innerHTML = showEmptyState();
+                                return;
+                            }
+
+                            const cardsHtml = cards.map(card => `
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-credit-card me-2 text-primary"></i>
+                                            <strong>${card.cardNumber.replace(/\d(?=\d{4})/g, "*")}</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <small class="text-muted">Kart Sahibi</small>
+                                                <div>${card.cardHolderName}</div>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted">Son Kullanma</small>
+                                                <div>${formatExpiryDateString(card.expiryDate)}</div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary w-100 mt-3"
+                                                onclick="selectSavedCard('${card.savedCardId}', '${card.cardNumber}', '${card.cardHolderName}', '${card.expiryDate}')">
+                                            <i class="fas fa-check me-2"></i>Bu Kartı Kullan
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('');
+
+                            container.innerHTML = cardsHtml;
+                        }
+                    </script>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/payment.js"></script>
+</html>

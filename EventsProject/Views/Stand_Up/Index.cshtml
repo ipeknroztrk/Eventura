@@ -1,0 +1,144 @@
+﻿@using EntityLayer.Concrete
+@using System.Security.Claims
+@using System.Globalization
+@model List<Event>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="dorne-load"></div>
+    </div>
+
+    <section class="dorne-listing-destinations-area section-padding-100-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading dark text-center">
+                        <span></span>
+                        <h4>Stand-Up Gösterileri</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="single-features-area mb-50" style="width:340px;height:500px; position: relative;">
+                            <!-- Tıklanabilir bağlantı -->
+                            <a href="@Url.Action("Details", "Stand_Up", new { id = item.EventId })" style="text-decoration: none; color: inherit;">
+                                <img src="@item.ImageUrl" style="width:340px;height:300px;" alt="">
+                                <div class="price-start">
+                                    <p>@item.EventDate.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))</p>
+                                </div>
+                                <div class="feature-content d-flex align-items-center justify-content-between">
+                                    <div class="feature-title">
+                                        <h5>@item.Title</h5>
+                                        <p>@item.Location</p>
+                                    </div>
+
+                                    <!-- Favori Butonu -->
+                                    <!-- Favori Butonu -->
+                                    <div class="feature-favourite">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <!-- UserId'yi saklayacak öğe -->
+                                            <div id="userData" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" style="display:none;"></div>
+
+                                            <a href="javascript:void(0);" onclick="addToFavorites(@item.EventId)">
+                                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascript:void(0);" onclick="showLoginPopup()">
+                                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+                <!-- Favorilere Eklendi Modal -->
+                <div id="favoritesAddedModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+                    <div style="background-color: white; padding: 30px; border-radius: 10px; text-align: center; width: 350px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+                        <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 50px; color: green; margin-bottom: 15px;"></i>
+                        <h5 style="margin-bottom: 10px;">Etkinlik favorilere eklendi!</h5>
+                        <p style="color: #555;">Favorilerinize giderek eklediğiniz etkinlikleri görebilirsiniz.</p>
+                        <button onclick="closeFavoritesModal()" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; border: none; margin-top: 20px; cursor: pointer;">Tamam</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Popup (Eğer kullanıcı giriş yapmamışsa) -->
+    <div id="loginPopup" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(50, 50, 50, 0.8); justify-content: center; align-items: center; color: white; text-align: center; z-index: 9999;">
+        <div style="background-color: rgba(40, 40, 40, 0.95); padding: 20px; border-radius: 8px; width: 300px;">
+            <p style="margin-bottom: 15px;">Favorilere eklemek için giriş yapmanız gerekmektedir.</p>
+            <a href="@Url.Action("SignIn", "Login", new { area = "Member" })" style="color: #fff; text-decoration: none; background-color: rgba(139, 0, 0, 0.99); padding: 12px 20px; border-radius: 5px; display: block; margin-bottom: 10px;">Giriş Yap</a>
+            <button onclick="closeLoginPopup()" style="background-color: rgba(139, 0, 0, 0.99); color: white; padding: 12px 20px; border-radius: 5px; border: none; display: block; width: 100%;">Kapat</button>
+        </div>
+    </div>
+
+    <script>
+        function addToFavorites(eventId) {
+            var userId = document.getElementById("userData").getAttribute("data-user-id");
+
+            if (!userId) {
+                alert("Lütfen giriş yapın.");
+                return;
+            }
+
+            userId = parseInt(userId, 10);
+
+            if (isNaN(userId)) {
+                alert("Geçerli bir kullanıcı kimliği yok.");
+                return;
+            }
+
+            $.ajax({
+                url: '/Concert/AddToFavorites',
+                type: 'POST',
+                data: {
+                    eventId: eventId,
+                    userId: userId
+                },
+                success: function (response) {
+                    console.log('Favorilere eklendi!');
+                    showFavoritesModal(); // Başarılı olduğunda modal açılır
+                },
+                error: function () {
+                    alert('Bir hata oluştu.');
+                }
+            });
+        }
+
+        function showFavoritesModal() {
+            document.getElementById("favoritesAddedModal").style.display = "flex";
+        }
+
+        function closeFavoritesModal() {
+            document.getElementById("favoritesAddedModal").style.display = "none";
+        }
+
+        function showLoginPopup() {
+            document.getElementById("loginPopup").style.display = "flex";
+        }
+
+        function closeLoginPopup() {
+            document.getElementById("loginPopup").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

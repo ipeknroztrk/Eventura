@@ -1,0 +1,26 @@
+﻿@using EntityLayer.Concrete;
+@model List<Event>
+
+@{
+    ViewBag.Title = "Arama Sonuçları";
+}
+
+<h2>Arama Sonuçları</h2>
+
+@if (Model.Any())
+{
+    <div class="event-list">
+        @foreach (var eventItem in Model)
+        {
+            <div class="event-item">
+                <h3>@eventItem.Title</h3>
+                <p>Category: @eventItem.Category</p>
+                <a href="@Url.Action("Details", "Concert", new { id = eventItem.EventId })">Detaylar</a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Aramanıza uygun etkinlik bulunamadı.</p>
+}

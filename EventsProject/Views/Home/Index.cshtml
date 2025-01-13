@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+@await Component.InvokeAsync("_UILayoutHeadComponent")
+
+<body>
+   
+    <div id="preloader">
+        <div class="dorne-load"></div>
+    </div>
+
+    @await Component.InvokeAsync("_UILayoutNavbarComponent")
+
+    @await Component.InvokeAsync("_UILayoutSearchComponent")
+    @await Component.InvokeAsync("_UILayoutCategoryComponent")
+
+
+    
+
+
+
+
+    @await Component.InvokeAsync("_UILayoutAllEventsComponent")
+
+    @await Component.InvokeAsync("_UILayoutUpcomingEventsComponent", new { page = 1 })
+    
+    
+    @await Component.InvokeAsync("_UILayoutPopulerEventsComponent")
+
+    @await Component.InvokeAsync("_UILayoutArtistComponent")
+
+   
+
+    @await Component.InvokeAsync("_UILayoutFooterComponent")
+
+    @await Component.InvokeAsync("_UILayoutScriptComponent")
+    
+   
+  
+   
+    
+
+</body>
+
+</html>

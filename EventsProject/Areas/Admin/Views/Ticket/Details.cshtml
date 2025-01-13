@@ -1,0 +1,88 @@
+﻿@model EventsProject.Areas.Admin.Models.TicketDetailsViewModel
+
+@{
+    ViewData["Title"] = "Bilet Detayları";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">
+                Etkinlik için Bilet Detayları: @Model.EventTitle
+            </h5>
+            <div class="ticket-summary">
+                <p>Toplam Kapasite: @Model.EventsTicket.TicketCapacity</p>
+                <p>Satılan Adet: @Model.EventsTicket.SoldCount</p>
+                <p>Fiyat: @Model.EventsTicket.Price.ToString("C")</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Bilet Numarası</th>
+                        <th>Durum</th>
+                        <th>Satın Alan</th>
+                        <th>Satın Alma Tarihi</th>
+                        <th>Fiyat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td>@ticket.TicketNumber</td>
+                            <td>
+                                @if (ticket.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Mevcut</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Satıldı</span>
+                                }
+                            </td>
+                            <td>@ticket.UserName</td>
+                            <td>
+                                @(ticket.PurchaseDate.HasValue
+                                    ? ticket.PurchaseDate.Value.ToString("dd/MM/yyyy HH:mm")
+                                    : "-")
+                            </td>
+                            <td>@ticket.Price.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="@Url.Action("Index", "Ticket", new { area = "Admin" })" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Listeye Geri Dön
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ticket-summary {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+    }
+
+        .ticket-summary p {
+            margin: 0;
+            padding: 5px 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+    .badge {
+        padding: 8px 12px;
+        border-radius: 4px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>

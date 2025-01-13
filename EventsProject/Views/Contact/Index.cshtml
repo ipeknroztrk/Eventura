@@ -1,0 +1,157 @@
+﻿@model EntityLayer.Concrete.Message
+@{
+    Html.RenderPartial("_ValidationScriptsPartial");
+
+
+}
+
+
+<!-- ***** Modal Div'i Başlangıç ***** -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Mesaj Gönderildi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***** Modal Div'i Bitiş ***** -->
+
+<!-- ***** İletişim Alanı Başlangıç ***** -->
+<div class="eventura-contact-area d-md-flex justify-content-center align-items-center text-center" id="contact">
+    <!-- İletişim Formu Alanı -->
+    <div class="contact-form-area equal-height">
+        <div class="contact-text">
+            <h4>Bizimle İletişime Geçin</h4>
+            <p>Etkinlikleriniz hakkında daha fazla bilgi almak veya sorularınızı sormak için bizimle iletişime geçin. Her türlü geri bildiriminiz bizim için değerlidir.</p>
+            <div class="contact-info d-lg-flex justify-content-center">
+                <div class="single-contact-info mx-3">
+                    <h6><i class="fa fa-map-signs" aria-hidden="true"></i> İstanbul, Türkiye</h6>
+                </div>
+                <div class="single-contact-info mx-3">
+                    <h6><i class="fa fa-envelope-o" aria-hidden="true"></i> destek@eventura.com</h6>
+                    <h6><i class="fa fa-phone" aria-hidden="true"></i> +90 555 555 55 55</h6>
+                </div>
+            </div>
+        </div>
+        <div class="contact-form">
+            <div class="contact-form-title">
+                <h6>İletişim Formu</h6>
+            </div>
+            
+
+            <form asp-action="Index" method="post">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <input asp-for="Name" class="form-control" placeholder="Adınız" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input asp-for="Email" class="form-control" placeholder="E-posta Adresiniz" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <input asp-for="Subject" class="form-control" placeholder="Konu" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <textarea asp-for="Content" class="form-control" id="Message" cols="30" rows="10" placeholder="Mesajınız"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn eventura-btn">Gönder</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- ***** İletişim Alanı Bitiş ***** -->
+<!-- ***** Footer Başlangıç ***** -->
+<footer class="eventura-footer-area text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 d-flex flex-column align-items-center">
+                <div class="footer-text">
+                    <p>&copy; <script>document.write(new Date().getFullYear());</script> Eventura. Tüm Hakları Saklıdır.</p>
+                </div>
+                <div class="footer-social-btns">
+                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- ***** Footer Bitiş ***** -->
+<style>
+    .eventura-contact-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 50px 0;
+    }
+
+    .contact-text {
+        margin-bottom: 30px;
+    }
+
+    .contact-info .single-contact-info {
+        margin: 10px 20px;
+    }
+
+    footer.eventura-footer-area {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .footer-social-btns a {
+        margin: 0 10px;
+        color: #555;
+        font-size: 20px;
+        transition: color 0.3s;
+    }
+
+        .footer-social-btns a:hover {
+            color: #007bff;
+        }
+
+</style>
+<!-- JavaScript ve Bootstrap Bağlantıları -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+@{
+    var successMessage = TempData["Success"];
+    var errorMessage = TempData["Error"];
+}
+
+@if (successMessage != null)
+{
+    <script>
+        $(document).ready(function () {
+            $('#successModal').modal('show');
+        });
+    </script>
+}
+
+@if (errorMessage != null)
+{
+    <script>
+        $(document).ready(function () {
+            alert("Mesaj gönderilirken bir hata oluştu.");
+        });
+    </script>
+}

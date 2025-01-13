@@ -1,0 +1,145 @@
+<!-- ** Search Form Area ** -->
+<div class="dorne-search-form d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="search-close-btn" id="closeBtn">
+                    <i class="pe-7s-close-circle" aria-hidden="true"></i>
+
+                </div>
+            </div>
+        </div>
+
+        <header class="header_area" id="header">
+            <div class="container-fluid h-100 " style="background-color: darkred;">
+                <div class="row h-100">
+                    <div class="col-12 h-100">
+                        <nav class="h-100 navbar navbar-expand-lg" style="background-color: darkred;">
+                            <div class="navbar-left">
+                                <a class="navbar-brand" href="index.html"><img src="#" alt=""></a>
+                                <h2 class="welcome-text">Hoşgeldin, @User.Identity.Name</h2>
+                            </div>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dorneNav" aria-controls="dorneNav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars"></span></button>
+                            <!-- Nav -->
+                            <div class="collapse navbar-collapse" id="dorneNav">
+                                <ul class="navbar-nav mr-auto" id="dorneMenu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <i class="fa fa-user-circle fa-lg"></i>
+                                            <span class="nav-tooltip">Profilim</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <i class="fa fa-ticket-alt fa-lg"></i>
+                                            <span class="nav-tooltip">Biletlerim</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <i class="fa fa-heart fa-lg"></i>
+                                            <span class="nav-tooltip">Favoriler</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <i class="fa fa-cog fa-lg"></i>
+                                            <span class="nav-tooltip">Ayarlar</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+
+
+
+                                <div class="dorne-add-listings-btn">
+                                    <a href="javascript:void(0);" class="user-icon" onclick="toggleDropdown()">
+                                        <img src="~/dorne-master/img/core-img/signup.png" alt="User Icon" style="width: 40px; height: 40px;">
+                                        <span>Profili Düzenle</span>
+                                    </a>
+                                    <!-- Dropdown Menü -->
+                                    <div id="dropdownMenu" class="dropdown-content">
+                                        <a href="@Url.Action(" SignUp ", "Register ", new { area = "Member " })">Kullanıcı Girişi</a>
+                                        <a href="@Url.Action(" Index ", "Login ", new { area = "Admin " })">Admin Girişi</a>
+                                        <a href="@Url.Action(" Index ", "Dashboard ", new { area = "Member " })">Kullanıcı Paneli</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <style>
+            .navbar-left {
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                width: 50%;
+            }
+            
+            .welcome-text {
+                color: white;
+                margin-left: 20px;
+                font-size: 24px;
+            }
+            
+            .dorne-add-listings-btn {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                width: 50%;
+            }
+            
+            .dorne-add-listings-btn a {
+                display: flex;
+                align-items: center;
+                margin-left: 20px;
+                color: #ffff;
+                text-decoration: none;
+            }
+            
+            .dorne-add-listings-btn a span {
+                margin-left: 10px;
+            }
+            
+            .nav-link {
+                position: relative;
+                display: inline-block;
+                color: #ffff;
+                text-align: center;
+                text-decoration: none;
+                margin: 0 10px;
+            }
+            
+            .nav-tooltip {
+                visibility: hidden;
+                color: #fff;
+                text-align: center;
+                padding: 5px 10px;
+                border-radius: 4px;
+                position: absolute;
+                top: -30px;
+                /* İkonun üzerine çıkması için */
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1;
+                opacity: 0;
+                transition: opacity 0.3s;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+            
+            .nav-link:hover .nav-tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+            
+            .nav-link i {
+                font-size: 32px;
+                /* İkon boyutunu büyütmek için */
+                color: #ffff;
+                /* İkon rengini ayarla */
+            }
+        </style>

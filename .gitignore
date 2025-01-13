@@ -1,0 +1,10 @@
+# Ignore bin and obj directories
+bin/
+obj/
+
+# Visual Studio temporary files
+.vs/
+*.csproj.user
+*.suo
+*.user
+.idea/

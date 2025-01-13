@@ -1,0 +1,60 @@
+﻿@model EventsProject.Areas.Admin.Models.EventTicketCreateDto
+
+@{
+    ViewData["Title"] = "Create Event Ticket";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-title">Yeni Etkinlik Bileti Ekle</div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Etkinlik Seçimi -->
+                        <div class="form-group">
+                            <label for="EventId">Event Title</label>
+                            <select class="form-control" id="EventId" name="EventId">
+                                <option value="">Select Event</option>
+                                @if (ViewBag.Events != null)
+                                {
+                                    @foreach (var eventItem in ViewBag.Events as SelectList)
+                                    {
+                                        <option value="@eventItem.Value">@eventItem.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Bilet Fiyatı -->
+                        <div class="form-group">
+                            <label for="Price">Bilet Fiyatı</label>
+                            <input type="number" class="form-control" id="Price" name="Price" value="@Model.Price" />
+                        </div>
+
+                        <!-- Bilet Adedi -->
+                        <div class="form-group">
+                            <label for="TicketCapacity">Bilet Adedi</label>
+                            <input type="number" class="form-control" id="TicketCapacity" name="TicketCapacity" value="@Model.TicketCapacity" />
+                        </div>
+
+                        <!-- Tür (VIP veya Genel) -->
+                        <div class="form-group">
+                            <label for="Name">Tür (VIP veya Genel)</label>
+                            <input class="form-control" id="Name" name="Name" value="@Model.Name" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Ekle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

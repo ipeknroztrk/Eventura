@@ -1,0 +1,68 @@
+﻿@using EntityLayer.Concrete
+@model List<Category>
+
+@{
+    ViewData["Title"] = "Kategori Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-title">Kategori Listesi</div>
+                    <a href="@Url.Action("Create", "Categories", new { area = "Admin" })" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Ekle
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.SuccessMessage
+                        </div>
+                    }
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Kategori ID</th>
+                                <th scope="col">Kategori Adı</th>
+                                <th scope="col">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.CategoryId</td>
+                                        <td>@item.Name</td>
+                                        <td>
+                                            <a href="@Url.Action("Details", "Categories", new { area = "Admin", id = item.CategoryId })" title="Detay" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i> Detay
+                                            </a>
+                                            <a href="@Url.Action("Edit", "Categories", new { area = "Admin", id = item.CategoryId })" title="Güncelle" class="btn btn-success btn-sm">
+                                                <i class="fas fa-edit"></i> Güncelle
+                                            </a>
+                                            <a href="@Url.Action("Delete", "Categories", new { area = "Admin", id = item.CategoryId })" title="Sil" class="btn btn-danger btn-sm" onclick="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');">
+                                                <i class="fas fa-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center">Hiç kategori bulunamadı.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

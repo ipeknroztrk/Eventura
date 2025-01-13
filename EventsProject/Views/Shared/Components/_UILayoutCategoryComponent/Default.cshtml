@@ -1,0 +1,44 @@
+﻿@using EntityLayer.Concrete
+@model List<Category>
+
+
+
+
+<section class="dorne-catagory-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="all-catagories">
+                    <div class="row">
+                        @foreach(var item in Model)
+                        {
+                            <div class="col-12 col-sm-6 col-md">
+                                <div class="single-catagory-area wow fadeInUpBig" data-wow-delay="0.2s">
+                                    <div class="catagory-content">
+                                        <img src="@item.IconUrl" alt="">
+                                        <a href="#">
+                                            <h6>@item.Name</h6>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                      
+                       
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .catagory-content img {
+        width: 60px; 
+        height: 60px;
+        object-fit: contain; 
+    }
+
+</style>

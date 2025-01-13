@@ -1,0 +1,176 @@
+﻿<section class="dorne-features-events-area bg-img bg-overlay-9 section-padding-100-50" style="background-image: url('/dorne-master/img/details_banner.png');">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <span></span>
+                    <h4>Tüm Etkinlikler</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-lg-6 event-item" style="display: none;">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.2s">
+                        <div class="feature-events-thumb">
+                            <img src="@item.ImageUrl" alt="">
+                            <div class="date-map-area d-flex justify-content-between align-items-center">
+                                <div class="date-box">
+                                    @item.EventDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+                                </div>
+                                <a href="#"><img src="~/dorne-master/img/core-img/map.png" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="feature-events-content">
+                            <h5>@item.Title</h5>
+                            <h6>@item.Location</h6>
+                            <p>@item.Description</p>
+                        </div>
+                        <div class="feature-events-details-btn">
+                            <a href="@Url.Action("Details", "Home", new { id = item.EventId })">+</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="more-events">
+                    <a href="#" class="more-events-btn">Tümünü Göster</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .single-feature-events-area {
+        
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        background: white;
+    }
+
+    .single-feature-events-area:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-events-thumb {
+        width: 100%;
+        height: 200px; /* Sabit yükseklik */
+        overflow: hidden;
+        position: relative; /* Alt öğeler için referans konum oluştur */
+        background: #f7f7f7;
+    }
+
+        .feature-events-thumb img {
+            width: 100%;
+            height: 100%; /* Kutunun yüksekliği kadar olacak */
+            object-fit: cover; /* Resmi düzgün kırp */
+        }
+
+    .date-map-area {
+        position: absolute; /* Tarih ve harita ikonunu resmin dışına yerleştir */
+        bottom: 25px; /* Resmin hemen altına yerleştir */
+        left: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.8); /* Şeffaf arka plan */
+        padding: 3px 5px; /* Daha küçük bir kutu için padding azaltıldı */
+        border-radius: 5px; /* Daha küçük köşe yuvarlama */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        z-index: 10; /* Resmin üstünde görünmesini sağla */
+        height: 35px; /* Yükseklik sınırlandı */
+        line-height: 20px; /* Metin hizalaması için */
+        font-size: 12px; /* Daha küçük yazı */
+    }
+
+    .date-box {
+        font-weight: bold;
+        font-size: 12px; /* Daha küçük yazı */
+    }
+
+    .date-map-area a img {
+        width: 18px; /* Daha küçük ikon */
+        height: 18px;
+    }
+
+    .date-map-area a {
+        height: 10px;
+    }
+
+    .more-events {
+        margin-top: 50px;
+    }
+
+    .more-events-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 18px;
+        color: white;
+        background: none;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        transition: color 0.3s;
+    }
+
+    .more-events-btn::after {
+        content: "▼";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 100%;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .more-events-btn:hover {
+        color: #007bff;
+    }
+
+    .more-events-btn:hover::after {
+        opacity: 1;
+    }
+
+    .more-events-btn:hover::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: white;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+   
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const eventItems = document.querySelectorAll('.event-item');
+        const showMoreButton = document.querySelector('.more-events-btn');
+        const itemsToShow = 6;
+
+        eventItems.forEach((item, index) => {
+            if (index < itemsToShow) {
+                item.style.display = 'block';
+            }
+        });
+
+        showMoreButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            eventItems.forEach(item => {
+                item.style.display = 'block';
+            });
+            showMoreButton.parentElement.style.display = 'none';
+        });
+    });
+</script>

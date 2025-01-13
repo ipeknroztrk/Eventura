@@ -1,0 +1,306 @@
+﻿@model EntityLayer.Concrete.AppUser
+
+@{
+    ViewData["Title"] = "Ayarlarım";
+    Layout = "~/Areas/Member/Views/Shared/_MemberDashboardLayout.cshtml";
+}
+
+<h1 class="mb-4 modern-heading" >Ayarlarım</h1>
+
+<div class="settings-container" ;">
+    <!-- Profil Resmi ve Genel Bilgiler -->
+    
+
+    <!-- Kullanıcı Bilgileri -->
+    <div class="card mb-4">
+        <div class="card-header">Kişisel Bilgiler</div>
+        <div class="card-body">
+            <form method="post" action="@Url.Action("UpdatePersonalInfo", "Dashboard", new { area = "Member" })">
+                <div class="form-group">
+                    <label for="name">Ad</label>
+                    <input type="text" class="form-control" id="name" name="Name" value="@Model.Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="surname">Soyad</label>
+                    <input type="text" class="form-control" id="surname" name="Surname" value="@Model.Surname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" class="form-control" id="email" name="Email" value="@Model.Email" required>
+                </div>
+                <button type="submit" class="button-87" role="button">Bilgileri Güncelle</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Şifre Değiştirme -->
+    <div class="card mb-4">
+        <div class="card-header">Şifre Değiştirme</div>
+        <div class="card-body">
+            <form method="post" action="@Url.Action("ChangePassword", "Dashboard", new { area = "Member" })">
+                <div class="form-group">
+                    <label for="currentPassword">Mevcut Şifre</label>
+                    <input type="password" class="form-control" id="currentPassword" name="CurrentPassword" placeholder="Mevcut şifrenizi girin" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Yeni Şifre</label>
+                    <input type="password" class="form-control" id="newPassword" name="NewPassword" placeholder="Yeni şifrenizi girin" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Yeni Şifre Tekrar</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" placeholder="Yeni şifrenizi tekrar girin" required>
+                </div>
+                <button type="submit" class="button-87" role="button">Şifre Değiştir</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bildirim Ayarları -->
+    <div class="card mb-4">
+        <div class="card-header">Bildirim Ayarları</div>
+        <div class="card-body">
+            <form id="notificationForm">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="emailNotifications" name="EmailNotifications">
+                    <label for="emailNotifications" class="form-check-label">E-posta bildirimleri</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="smsNotifications" name="SmsNotifications">
+                    <label for="smsNotifications" class="form-check-label">SMS bildirimleri</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="pushNotifications" name="PushNotifications">
+                    <label for="pushNotifications" class="form-check-label">Mobil uygulama bildirimleri</label>
+                </div>
+                <button type="button" class="button-87" id="updateButton" role="button">Bildirimleri Güncelle</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bildirim Ayarları Güncellendi Modal -->
+    <div id="notificationsUpdatedModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background-color: white; padding: 30px; border-radius: 10px; text-align: center; width: 350px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+            <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 50px; color: green; margin-bottom: 15px;"></i>
+            <h5 style="margin-bottom: 10px;">Bildirim Ayarları Güncellendi!</h5>
+            <p style="color: #555;">Bildirim ayarlarınız başarıyla güncellendi.</p>
+            <button onclick="closeNotificationsModal()" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; border: none; margin-top: 20px; cursor: pointer;">Tamam</button>
+        </div>
+    </div>
+
+
+                
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modern-heading {
+        margin-top: 200px; /* Daha aşağıda konumlandır */
+        font-family: 'Roboto', sans-serif; /* Modern bir font ailesi kullan */
+        font-size: 36px; /* Yazı boyutunu büyüt */
+        font-weight: 700; /* Kalınlık ayarı */
+        color: #333; /* Yazı rengi */
+        text-align: center; /* Ortala */
+        letter-spacing: 1px; /* Harf aralığı */
+    }
+
+    /* Genel Ayarlar */
+    body {
+     
+        background-color: #f8f9fa; /* Açık gri arkaplan */
+        margin: 0;
+        padding: 0;
+        color: #333; /* Koyu gri metin */
+    }
+
+    .settings-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff; /* Beyaz arkaplan */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Kutu gölgesi */
+        border-radius: 12px; /* Yuvarlak köşeler */
+    }
+
+    .button-87 {
+        margin: 10px;
+        padding: 15px 30px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        border-radius: 10px;
+        display: block;
+        border: 0px;
+        font-weight: 700;
+        box-shadow: 0px 0px 14px -7px #a60000; /* Koyu kırmızı tonunda gölge */
+        background-image: linear-gradient(45deg, #B71C1C 0%, #D32F2F 51%, #B71C1C 100%); /* Koyu kırmızı renkler */
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        width: 200px; /* Butonun genişliğini sınırlayarak ortalamayı kolaylaştırabilirsiniz */
+        margin-left: auto;
+        margin-right: auto;
+        
+    }
+
+        .button-87:hover {
+            background-position: right center;
+            /* change the direction of the change here */
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .button-87:active {
+            transform: scale(0.95);
+        }
+    h1 {
+        text-align: center;
+        color: #990000; /* Koyu kırmızı başlık */
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    /* Kartlar */
+    .card {
+        border: none;
+        border-radius: 12px; /* Yuvarlak köşeler */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        background-color: #fff; /* Kartların beyaz arkaplanı */
+    }
+
+    .card-header {
+        background-color: #ddd; /* Açık gri başlık */
+        color: #333; /* Koyu gri yazı */
+        font-weight: bold;
+        padding: 10px 15px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    /* Form ve Input */
+    /* Label Stil */
+    .form-group label {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern ve şık font */
+        font-size: 1.125rem; /* Biraz daha büyük font boyutu */
+        font-weight: 500; /* Orta ağırlık */
+        color: #555; /* Yumuşak gri ton */
+        text-transform: capitalize; /* İlk harfleri büyük yapar */
+        letter-spacing: 0.5px; /* Harf aralığını artırarak şıklık katma */
+        display: block; /* Etiketleri blok seviyesinde yapar */
+        margin-bottom: 8px; /* Etiket ve input arasına boşluk ekler */
+        transition: all 0.3s ease-in-out; /* Hover ve odaklanma efekti için yumuşak geçiş */
+        padding: 0 5px; /* Hafif iç boşluk ekler */
+    }
+
+        /* Hover durumu */
+        .form-group label:hover {
+            color: #FF5722; /* Hoverda renk değişimi */
+            transform: translateY(-2px); /* Hoverda hafif yukarı kayma */
+        }
+
+        /* Etiket odaklandığında stil */
+        .form-group label:focus-within {
+            color: #FF5722; /* Odaklanma durumunda renk değişimi */
+            font-weight: 600; /* Odaklandığında font ağırlığını artır */
+            text-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Hafif gölge efekti */
+        }
+
+    /* Checkbox */
+    .form-check-input {
+        border-color: #ccc;
+    }
+
+        .form-check-input:checked {
+            background-color: #990000; /* Koyu kırmızı işaret */
+            border-color: #990000;
+        }
+
+    .form-check-label {
+        margin-left: 5px;
+        color: #555;
+    }
+
+    /* Butonlar */
+    .btn-primary {
+        background-color: #990000; /* Koyu kırmızı */
+        border: none;
+        border-radius: 8px; /* Yuvarlak kenarlar */
+        padding: 10px 20px;
+        color: #fff;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #cc0000; /* Daha açık kırmızı */
+        }
+
+    /* Aralar için boşluklar */
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+
+
+</style>
+
+<script>
+    // Sayfa yüklendiğinde, localStorage'dan ayarları alıp, checkbox'ları güncelle
+    window.onload = function () {
+        const emailNotifications = localStorage.getItem("emailNotifications") === "true";
+        const smsNotifications = localStorage.getItem("smsNotifications") === "true";
+        const pushNotifications = localStorage.getItem("pushNotifications") === "true";
+
+        document.getElementById("emailNotifications").checked = emailNotifications;
+        document.getElementById("smsNotifications").checked = smsNotifications;
+        document.getElementById("pushNotifications").checked = pushNotifications;
+
+        // "Bildirimleri Güncelle" butonuna tıklanınca çalışacak olay
+        document.getElementById("updateButton").addEventListener("click", function () {
+            // Kullanıcının seçtiği bildirim ayarlarını al
+            const emailNotifications = document.getElementById("emailNotifications").checked;
+            const smsNotifications = document.getElementById("smsNotifications").checked;
+            const pushNotifications = document.getElementById("pushNotifications").checked;
+
+            // Ayarları localStorage'a kaydet
+            localStorage.setItem("emailNotifications", emailNotifications);
+            localStorage.setItem("smsNotifications", smsNotifications);
+            localStorage.setItem("pushNotifications", pushNotifications);
+
+            // Bildirim Ayarları Modal'ını açma
+            showNotificationsModal();
+        });
+    };
+
+    // Bildirim Ayarları Modal'ını açma
+    function showNotificationsModal() {
+        document.getElementById("notificationsUpdatedModal").style.display = "flex"; // Modal'ı aç
+    }
+
+    // Bildirim Ayarları Modal'ını kapatma
+    function closeNotificationsModal() {
+        document.getElementById("notificationsUpdatedModal").style.display = "none"; // Modal'ı kapat
+    }
+
+</script>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

@@ -1,0 +1,211 @@
+﻿@using EntityLayer.Concrete;
+@model Event
+
+@{
+    ViewData["Title"] = "Etkinlik Detayları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/details.css">
+
+
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="dorne-load"></div>
+    </div>
+
+    <section class="event-detail-container">
+        <div class="event-detail-wrapper">
+
+            <!-- Event Image -->
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="event-image">
+                    <img src="@Model.ImageUrl" alt="Event Image" class="img-fluid">
+                </div>
+            }
+
+            <!-- Event Details -->
+            <div class="event-content">
+                <h2 class="event-title">@Model.Title</h2>
+                <div class="event-overview">
+                    <p class="event-description">@Model.Description</p>
+                    <p class="event-details">@Model.Details</p>
+                    <p class="event-date">@Model.EventDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+                </div>
+
+                <!-- Event Location -->
+                <div class="event-location">
+                    <strong>Konum:</strong> @Model.Location
+                </div>
+
+                <!-- Google Map -->
+                <div class="event-map">
+                    <h3>Haritada Göster</h3>
+                    @if (!string.IsNullOrEmpty(Model.LocationUrl))
+                    {
+                        <iframe src="@Model.LocationUrl" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    }
+                    else
+                    {
+                        <p>Harita bulunamadı.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Sidebar and Buy Ticket -->
+            <div class="event-sidebar">
+                <div class="listing-sidebar">
+
+                    <div class="listing-verify">
+                        <!-- Giriş Yap ve Bilet Al Butonu -->
+                        <!-- Giriş Yap ve Bilet Al Butonu -->
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button class="btn dorne-btn w-100 opening-hours-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#paymentModal"
+                                    data-eventid="@Model.EventId"
+                                    data-price="@ViewBag.TicketPrice">
+                                <!-- Fiyatı data-price olarak ekliyoruz -->
+                                <i class="fa fa-check pr-3"></i> Bilet Al (@ViewBag.TicketPrice.ToString("C"))
+                            </button>
+
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("SignIn", "Login", new { area = "Member" })" class="btn dorne-btn w-100">
+                                <i class="fa fa-sign-in pr-3"></i> Giriş Yap ve Bilet Al
+                            </a>
+                        }
+
+                    </div>
+
+                    <!-- Opening Hours Widget -->
+                    <div class="opening-hours-widget mt-3">
+                        <h6 style="color:white">Açılış Saati</h6>
+                        <ul class="opening-hours text-center">
+                            <li>
+                                <p style="color:white">@Model.EventDate.ToString("HH:mm")</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ödeme Modalı -->
+    <!-- Ödeme Modalı -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Ödeme</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Kart Görünümü -->
+                    <div id="paymentCardPreview">
+                        <div class="card-number" id="cardNumberPreview">**** **** **** ****</div>
+                        <div class="card-holder" id="cardHolderNamePreview">Kart Sahibinin Adı</div>
+                        <div class="expires">Expires: <span id="expiryDatePreview">MM/YY</span></div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" class="card-logo" alt="Card Logo">
+                    </div>
+
+                    <!-- Kart Bilgileri Formu -->
+                    <form method="post" action="@Url.Action("SaveCard", "Payment")">
+                        <input type="hidden" name="EventId" value="@Model.EventId" />
+                        <input type="hidden" name="EventTicketId" value="@Model.EventsTicketId" />
+                        <input type="hidden" name="selectedCardId" id="selectedCardId" value="" />
+                        <!-- Kart Sahibinin Adı -->
+                        <div class="mb-3">
+                            <label for="cardHolderName" class="form-label">Kart Sahibinin Adı Soyadı</label>
+                            <input type="text" class="form-control" id="cardHolderName" name="cardHolderName"
+                                   placeholder="Kart Sahibinin Adı Soyadı" required oninput="updateCardPreview()" />
+                        </div>
+
+                        <!-- Kart Numarası -->
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Kart Numarası</label>
+                            <input type="text" class="form-control" id="cardNumber" name="cardNumber"
+                                   placeholder="Kart Numarası (4-4-4-4)" maxlength="19"
+                                   required oninput="formatCardNumber(event); updateCardPreview()" />
+                            <small class="form-text text-muted">Kart numarasını 4-4-4-4 formatında girin.</small>
+                        </div>
+
+                        <!-- Son Kullanma Tarihi -->
+                        <div class="mb-3">
+                            <label for="expiryDate" class="form-label">Son Kullanma Tarihi</label>
+                            <input type="text" class="form-control" id="expiryDate" name="expiryDate"
+                                   placeholder="MM/YY" maxlength="5"
+                                   required oninput="formatExpiryDate(event); updateCardPreview()" />
+                            <small class="form-text text-muted">Son kullanma tarihini MM/YY formatında girin.</small>
+                        </div>
+
+                        <!-- CVV -->
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV (3 haneli)"
+                                   pattern="^\d{3}$" maxlength="3" inputmode="numeric"
+                                   required oninput="updateCardPreview()" />
+                            <small class="form-text text-muted">CVV numarasını 3 haneli olarak girin.</small>
+                        </div>
+
+                        <!-- Kartı Kaydetme Seçeneği -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="true" id="saveCard" name="saveCard">
+                            <label class="form-check-label" for="saveCard">
+                                Kartımı Kaydet
+                            </label>
+                        </div>
+
+                        <!-- Ödeme Butonu -->
+                        <button type="submit" class="btn btn-success w-100 mt-3">Ödemeyi Tamamla</button>
+                    </form>
+                    <!-- Kayıtlı Kartlarla Ödeme Yap Linki -->
+                    <div class="mb-3 text-center">
+                        <a href="javascript:void(0);" class="text-primary" style="text-decoration: underline;" onclick="loadSavedCardModal()">
+                            Kayıtlı Kartlarımla Ödeme Yapmak İstiyorum
+                        </a>
+                    </div>
+
+                    <!-- Kayıtlı Kartlar Modal -->
+                    <div class="modal" tabindex="-1" id="savedCardModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Kayıtlı Kartlarınız</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="savedCardsList">
+                                        <!-- Kartlar buraya dinamik olarak eklenecek -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/payment.js"></script>
+</html>

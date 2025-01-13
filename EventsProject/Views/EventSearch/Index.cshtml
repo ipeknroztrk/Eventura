@@ -1,0 +1,85 @@
+﻿@model List<EntityLayer.Concrete.Event>
+
+@{
+    ViewData["Title"] = "Event Search";
+    Layout = "~/Views/Shared/_SearchLayout.cshtml";
+}
+
+<!-- ***** Listing Destinations Area Start ***** -->
+<section class="dorne-listing-destinations-area section-padding-100-50">
+    <div class="container">
+        <!-- Başlık -->
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading dark text-center">
+                    <span></span>
+                    <h4>
+                        @if (ViewBag.SelectedCity != null && ViewBag.SelectedCategory != null)
+                        {
+                            @($"{ViewBag.SelectedCity} şehrindeki {ViewBag.SelectedCategory} etkinlikleri")
+                        }
+                        else if (ViewBag.SelectedCity != null)
+                        {
+                            @($"{ViewBag.SelectedCity} şehrindeki etkinlikler")
+                        }
+                        else if (ViewBag.SelectedCategory != null)
+                        {
+                            @($"{ViewBag.SelectedCategory} etkinlikleri")
+                        }
+                        else
+                        {
+                            <text>Öne Çıkan Etkinlikler</text>
+                        }
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Etkinlik Listesi -->
+        <div class="row">
+            @if (Model != null && Model.Count > 0)
+            {
+                @foreach (var eventItem in Model)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4">
+                       
+                            <div class="single-features-area mb-50">
+                            <a href="@Url.Action("Details", "Stand_Up", new { id = eventItem.EventId })" style="text-decoration: none; color: inherit;">
+                                <!-- Etkinlik Görseli --> <img src="@eventItem.ImageUrl" alt="Etkinlik Görseli" class="img-fluid">
+
+                                <!-- Tarih --> <div class="price-start">
+                                    <p>@(eventItem.EventDate.ToString("dd/MM/yyyy"))</p>
+                                    </div> <!-- İçerik --> <div class="feature-content d-flex align-items-center justify-content-between">
+                                        <div class="feature-title"> <h5>@eventItem.Title</h5> </div> 
+                                        <div class="feature-favourite"> <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                                            </a> </div>
+                                            </div>
+
+                            </a> 
+
+                            </div>
+                            
+                       
+                    </div>
+                }
+            }
+            else
+            {
+                <!-- Veri yokken gösterilecek mesaj -->
+                <div class="col-12 text-center">
+                    <p class="text-muted">Seçtiğiniz kriterlere uygun bir etkinlik bulunamadı.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- ***** Listing Destinations Area End ***** -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Sayfa yüklendiğinde scroll işlemini başlat
+        const renderBodyElement = document.querySelector('.about-content'); // RenderBody içeriğini bul
+        if (renderBodyElement) {
+            renderBodyElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    });
+</script>

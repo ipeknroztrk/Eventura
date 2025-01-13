@@ -1,0 +1,77 @@
+﻿@using EntityLayer.Concrete
+@model Event
+
+@{
+	ViewData["Title"] = "Etkinlik Detayları";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container">
+	<div class="page-inner">
+
+		<div class="row">
+			<div class="col-md-12">
+
+
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">@Model.Title</h4>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-5 col-md-4">
+								<div class="nav flex-column nav-pills nav-secondary nav-pills-no-bd" id="v-pills-tab-without-border" role="tablist" aria-orientation="vertical">
+									<a class="nav-link active" id="v-pills-home-tab-nobd" data-bs-toggle="pill" href="#v-pills-home-nobd" role="tab" aria-controls="v-pills-home-nobd" aria-selected="true">Açıklama</a>
+									<a class="nav-link" id="v-pills-profile-tab-nobd" data-bs-toggle="pill" href="#v-pills-profile-nobd" role="tab" aria-controls="v-pills-profile-nobd" aria-selected="false">Konum</a>
+									<a class="nav-link" id="v-pills-messages-tab-nobd" data-bs-toggle="pill" href="#v-pills-messages-nobd" role="tab" aria-controls="v-pills-messages-nobd" aria-selected="false">Görseller</a>
+								</div>
+							</div>
+							<div class="col-7 col-md-8">
+								<div class="tab-content" id="v-pills-without-border-tabContent">
+									<div class="tab-pane fade show active" id="v-pills-home-nobd" role="tabpanel" aria-labelledby="v-pills-home-tab-nobd">
+										<p>@Model.Description</p>
+										<p>@Model.Details</p>
+
+
+									</div>
+									<div class="tab-pane fade" id="v-pills-profile-nobd" role="tabpanel" aria-labelledby="v-pills-profile-tab-nobd">
+										<h4>@Model.EventDate.ToString("dd MM yyyy")</h4>
+										<h4>@Model.Location</h4>
+
+										<div class="location-on-map mt-50" id="lomap">
+											<h6>Haritada Gösterimi</h6>
+											<div class="location-map">
+												<div id="locationMap">
+
+													@if (!string.IsNullOrEmpty(Model.LocationUrl))
+													{
+														<iframe src="@Model.LocationUrl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+													}
+													else
+													{
+														<p>Harita bulunamadı.</p>
+													}
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+									<div class="tab-pane fade" id="v-pills-messages-nobd" role="tabpanel" aria-labelledby="v-pills-messages-tab-nobd">
+										<h4>@ViewBag.ArtistName - @ViewBag.CategoryName</h4>
+
+										@if (!string.IsNullOrEmpty(Model.ImageUrl))
+										{
+											<div style="display: flex; justify-content: left; margin-top: 5px;">
+												<div class="event-image" style="width: 300px; height: 300px;">
+													<img src="@Model.ImageUrl" alt="Event Image" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+												</div>
+											</div>
+										}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

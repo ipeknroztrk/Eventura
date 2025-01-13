@@ -1,0 +1,133 @@
+﻿@using EntityLayer.Concrete
+@model List<Artist>
+@{
+    ViewData["Title"] = "Sanatçı Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Sayfa yüksekliği kadar içerik ortalanır */
+        padding: 0 15px; /* Sağ ve sol boşluk bırakılır */
+    }
+
+    .card {
+        width: 100%;
+        max-width: 1200px; /* Maksimum genişlik */
+        margin: 20px 0; /* Üst ve alt boşluk */
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .btn-warning {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        text-decoration: none;
+        background-color: #ffc107;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+    .action-icons a {
+        margin-right: 8px;
+        text-decoration: none;
+    }
+
+    .action-icons i {
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title">Sanatçı Listesi</div>
+            <a href="@Url.Action("Create", "Artist", new { area = "Admin" })" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ekle
+            </a>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+                        <th scope="col">İsim</th>
+                        <th scope="col">Biyografi</th>
+                        <th scope="col">Resim</th>
+                        <th scope="col">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="event-row" data-id="@item.ArtistId">
+                            <td>@item.Name</td>
+                            <td>@item.Bio</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" alt="Sanatçı Resmi" style="width: 100px; height: auto;" />
+                                }
+                                else
+                                {
+                                    <p>Resim Yok</p>
+                                }
+                            </td>
+                            <td>
+                                <!-- Güncelle -->
+                                <a href="@Url.Action("Edit", "Artist", new { area = "Admin", id = item.ArtistId })" title="Güncelle" style="margin-right: 5px;">
+                                    <i class="fas fa-edit" style="font-size: 1.2rem; color: #28a745;"></i>
+                                </a>
+                                <!-- Sil -->
+                                <a href="@Url.Action("Delete", "Artist", new { area = "Admin", id = item.ArtistId })" title="Sil" onclick="return confirm('Bu sanatçıyı silmek istediğinize emin misiniz?');">
+                                    <i class="fas fa-trash" style="font-size: 1.2rem; color: #dc3545;"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const baseUrl = '@Url.Action("Details", "Artist", new { area = "Admin" })' + '/';
+    document.querySelectorAll('.event-row').forEach(row => {
+        row.addEventListener('dblclick', function () {
+            // Satırın data-id özelliğini al
+            var artistId = this.getAttribute('data-id');
+            // Detay sayfasına yönlendir
+            window.location.href = baseUrl + artistId;
+        });
+    });
+</script>

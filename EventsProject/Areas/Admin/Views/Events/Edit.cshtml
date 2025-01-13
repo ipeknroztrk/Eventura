@@ -1,0 +1,130 @@
+﻿@using EntityLayer.Concrete
+@model Event
+@{
+    ViewData["Title"] = "Etkinlik Güncelleme";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Etkinlik Güncelle</div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/Admin/Events/Edit" method="POST" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <!-- ID'yi gizli bir alan olarak tutuyoruz -->
+                            <input type="hidden" name="EventId" value="@Model.EventId" />
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Kategoriler</label>
+                                        <select class="form-control" name="CategoryId">
+                                            <option value="">Kategoriyi Seçin</option>
+                                            @foreach (var category in ViewBag.Categories)
+                                            {
+                                                <option value="@category.CategoryId" @(category.CategoryId == Model.CategoryId ? "selected" : "")>
+                                                    @category.Name
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Artistler</label>
+                                        <select class="form-control" name="ArtistId">
+                                            <option value="">Sanatçıyı Seçin</option>
+                                            @foreach (var artist in ViewBag.Artists)
+                                            {
+                                                <option value="@artist.ArtistId" @(artist.ArtistId == Model.ArtistId ? "selected" : "")>
+                                                    @artist.Name
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Title">Başlık</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="Title"
+                                               name="Title"
+                                               value="@Model.Title"
+                                               placeholder="Etkinlik başlığını girin" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Description">Açıklama</label>
+                                        <textarea class="form-control"
+                                                  id="Description"
+                                                  name="Description"
+                                                  rows="4"
+                                                  placeholder="Etkinlik açıklamasını girin">@Model.Description</textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="EventDate">Etkinlik Tarihi</label>
+                                        <input type="datetime-local"
+                                               class="form-control"
+                                               id="EventDate"
+                                               name="EventDate"
+                                               value="@Model.EventDate.ToString("yyyy-MM-ddTHH:mm")" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Location">Konum</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="Location"
+                                               name="Location"
+                                               value="@Model.Location"
+                                               placeholder="Etkinlik konumunu girin" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ImageUrl">Resim URL'si</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="ImageUrl"
+                                               name="ImageUrl"
+                                               value="@Model.ImageUrl"
+                                               placeholder="Resim URL'sini girin" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="LocationUrl">Konum URL'si</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="LocationUrl"
+                                               name="LocationUrl"
+                                               value="@Model.LocationUrl"
+                                               placeholder="Konum URL'sini girin" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Details">Detaylar</label>
+                                        <textarea class="form-control"
+                                                  id="Details"
+                                                  name="Details"
+                                                  rows="4"
+                                                  placeholder="Etkinlik detaylarını girin">@Model.Details</textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Etkinliği Güncelle</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,410 @@
+﻿@using EntityLayer.Concrete
+@using Newtonsoft.Json;
+
+
+@{
+    var monthNames = ViewBag.MonthNames;
+    var eventCounts = ViewBag.EventCounts;
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var monthNames = @Html.Raw(JsonConvert.SerializeObject(ViewBag.MonthNames));
+    var eventCounts = @Html.Raw(JsonConvert.SerializeObject(ViewBag.EventCounts));
+
+    window.onload = function () {
+        var ctx = document.getElementById('eventCountChart').getContext('2d');
+
+        var eventCountChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: monthNames, // Ay isimleri
+                datasets: [{
+                    label: 'Etkinlik Sayısı',
+                    data: eventCounts, // Etkinlik sayıları
+                    backgroundColor: '#abafc6', // Barların rengi
+                    borderColor: '#5397d6', // Border rengi
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                            borderColor: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            color: '#666',
+                            stepSize: 1,
+                            callback: function (value) {
+                                return value.toFixed(0);
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Aylar',
+                            color: '#abafc6', // X ekseni yazı rengi
+                        },
+                        ticks: {
+                            color: '#abafc6' // X eksenindeki rakamların rengi
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                plugins: {
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function (context) {
+                                return context.raw + " etkinlik";
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
+</script>
+
+
+<!-- Font Awesome CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<style>
+    /* Main Container Styling */
+
+    .icon-black {
+        color: black !important; /* İkonun rengini siyah yapar */
+        background-color: transparent !important; /* Arka planı şeffaf yapar */
+        z-index: 1; /* İkonun ön planda görünmesini sağlar */
+    }
+
+    /* İkonların boyutunu büyütme ve altta hizalama */
+    .icon-container {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* İkonları altta hizalar */
+        height: 60px; /* İkonun konumunun belirlenmesi için uygun yükseklik */
+    }
+    .icon-container i {
+            font-size: 40px; /* İkonları daha büyük yapmak için font boyutunu arttırma */
+            color: black; /* İkon rengini siyah yapma */
+    }
+
+
+
+
+</style>
+
+<div class="container">
+    <div class="page-inner">
+        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+                <h3 class="fw-bold mb-3">Admin Paneli</h3>
+                <h6 class="op-7 mb-2">Eventura Admin Yönetim Sistemi</h6>
+            </div>
+            <div class="ms-md-auto py-2 py-md-0">
+               
+            </div>
+        </div>
+        <div class="row">
+            <!-- Sanatçı Sayısı -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-container">
+                                    <!-- Sanatçı ikonu -->
+                                    <i class="fas fa-music"></i> <!-- Burada sanatçıları temsil eden müzik ikonu kullanıldı -->
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Sanatçı Sayısı</p>
+                                    <h4 class="card-title">@ViewBag.ArtistCount</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Etkinlik Sayısı -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-container">
+                                    <!-- Etkinlik ikonu -->
+                                    <i class="fas fa-calendar-alt"></i> <!-- Etkinlikleri temsil eden takvim ikonu kullanıldı -->
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Etkinlik Sayısı</p>
+                                    <h4 class="card-title">@ViewBag.EventCount</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kategori Sayısı -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-container">
+                                    <!-- Kategori ikonu -->
+                                    <i class="fas fa-th-large"></i> <!-- Kategorileri temsil eden kareli ikonu kullanıldı -->
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Kategori Sayısı</p>
+                                    <h4 class="card-title">@ViewBag.CategoryCount</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mesaj Sayısı -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-container">
+                                    <!-- Mesaj ikonu -->
+                                    <i class="fas fa-envelope"></i> <!-- Mesajları temsil eden zarf ikonu kullanıldı -->
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Mesaj Sayısı</p>
+                                    <h4 class="card-title">@ViewBag.MessageCount</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card card-round">
+                    <div class="card-header">
+                        
+                            <div class="card-head-row">
+                                <div class="card-title">Aylara Göre Etkinlik Sayısı</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" style="min-height: 375px">
+                                <canvas id="eventCountChart"></canvas>
+                                </div>
+                            </div>
+                        
+                    </div>
+                   @*  <div class="card-body">
+                        <div class="chart-container" style="min-height: 375px">
+                            <canvas id="statisticsChart"></canvas>
+                        </div>
+                        <div id="myChartLegend"></div>
+                    </div> *@
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-primary card-round">
+                    <div class="card-header">
+                        <div class="card-head-row">
+                            <div class="card-title">Satış Tablosu</div>
+                            
+                        </div>
+                   
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="mb-4 mt-2">
+                            <div class="mb-4 mt-2">
+                                <h1>@ViewBag.TotalSales ₺</h1> <!-- Toplam satış -->
+                            </div>
+
+                        </div>
+                       @*  <div class="pull-in">
+                            <canvas id="dailySalesChart"></canvas>
+                        </div> *@
+                    </div>
+                </div>
+
+
+
+                <div class="card card-round">
+                    <div class="card-body pb-0">
+                        <div class="h1 fw-bold float-end text-primary"></div>
+                        <h2 class="mb-2">@ViewBag.UserCount</h2> <!-- Kullanıcı sayısı -->
+                        <p class="text-muted">kayıtlı kullanıcı</p>
+                        <div class="pull-in sparkline-fix">
+                            <div id="lineChart"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        @* <div class="row">
+            <div class="col-md-12">
+                <div class="card card-round">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                          
+                        </div>
+                      
+                    </div>
+            
+                </div>
+            </div>
+        </div> *@
+        <div class="row d-flex">
+            <!-- Son Kayıt Olan Kullanıcılar Kartı -->
+            <div class="col-md-4">
+                <div class="card card-round h-100">
+                    <div class="card-body">
+                        <div class="card-head-row card-tools-still-right">
+                            <div class="card-title">Son Kayıt Olan Kullanıcılar</div>
+                        </div>
+                        <div class="card-list py-4">
+                            @foreach (var user in ViewBag.LatestUsers as List<AppUser>)
+                            {
+                                <div class="item-list">
+                                    <div class="avatar">
+                                        @if (!string.IsNullOrEmpty(user.Image))
+                                        {
+                                            <img src="@user.Image" alt="..." class="avatar-img rounded-circle" />
+                                        }
+                                        else
+                                        {
+                                            <span class="avatar-title rounded-circle border border-white">
+                                                @if (!string.IsNullOrEmpty(user.Name))
+                                                {
+                                                    @user.Name[0]
+                                                }
+                                            </span>
+                                        }
+                                    </div>
+
+                                    <div class="info-user ms-3">
+                                        <div class="username">@user.Name @user.Surname</div>
+                                        <div class="status">@user.Email</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İşlem Geçmişi Kartı -->
+            <div class="col-md-8">
+                <div class="card card-round h-100">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <div class="card-title">İşlem Geçmişi</div>
+                            <div class="card-tools">
+                                <div class="dropdown">
+                                    <button class="btn btn-icon btn-clean me-0"
+                                            type="button"
+                                            id="dropdownMenuButton"
+                                            data-bs-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <!-- Ödemeler Tablosu -->
+                        <div class="table-responsive" style="max-height: 500px; overflow-x: auto;">
+                            <table class="table align-items-center mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Ödeme Numarası</th>
+                                        <th scope="col" class="text-end">Ad Soyad</th>
+                                        <th scope="col" class="text-end">Tarih & Saat</th>
+                                        <th scope="col" class="text-end">Tutar</th>
+                                        <th scope="col" class="text-end">Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var payment in ViewBag.Payments)
+                                    {
+                                        <tr>
+                                            <th scope="row">
+                                                <!-- Ödeme ID'si 45 veya 37 ise 'danger' butonu, aksi takdirde 'success' butonu -->
+                                                @if (payment.PaymentId == 45 || payment.PaymentId == 37)
+                                                {
+                                                    <button class="btn btn-icon btn-round btn-danger btn-sm me-2">
+                                                        <i class="fa fa-times-circle"></i>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-icon btn-round btn-success btn-sm me-2">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                }
+                                                Ödeme #@payment.PaymentId
+                                            </th>
+                                            <td class="text-end">@payment.UserName</td>
+                                            <td class="text-end">@payment.PaymentDate.ToString("MMM dd, yyyy, h:mm tt")</td>
+                                            <td class="text-end">@payment.Price.ToString("C")</td>
+                                            <td class="text-end">
+                                                @if (payment.PaymentId == 45 || payment.PaymentId == 37)
+                                                {
+                                                    <span class="badge badge-danger">
+                                                        <i class="fas fa-times-circle"></i> Başarısız
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-success">
+                                                        <i class="fas fa-check-circle"></i> Tamamlandı
+                                                    </span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

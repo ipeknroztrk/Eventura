@@ -1,0 +1,67 @@
+﻿<section class="dorne-welcome-area bg-img bg-overlay">
+    <!-- Video Arka Plan -->
+    <!-- Arka Plan Resmi -->
+    <img src="~/dorne-master/img/cover.jpg" alt="Hero Image"
+         class="bg-image"
+         style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
+
+
+    <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-center">
+            <div class="col-12 col-md-10">
+                <div class="hero-content">
+                    <h2>Yakınınızdaki etkinlikleri keşfedin</h2>
+                    <h4>Şehrinizdeki en popüler etkinlikleri kaçırmayın</h4>
+                </div>
+                <!-- Hero Search Form -->
+                <div class="hero-search-form">
+                    <!-- Tabs -->
+                    <div class="nav nav-tabs" id="heroTab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-events-tab" data-toggle="tab" href="#nav-events" role="tab" aria-controls="nav-events" aria-selected="true">Etkinlikler</a>
+                       
+                    </div>
+                    <!-- Tabs Content -->
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+                            <h6>Hangi etkinlikleri arıyorsunuz?</h6>
+                            <form action="/EventSearch/Index" method="get">
+                                <select class="custom-select" name="cityId">
+                                    <option selected value="">Etkinlik Şehri</option>
+                                    @foreach (var city in (IEnumerable<DataAccessLayer.City>)ViewBag.Cities)
+                                    {
+                                        <option value="@city.CityId">@city.CityName</option>
+                                    }
+                                </select>
+                                <select class="custom-select" name="categoryId">
+                                    <option selected value="">Tüm Kategoriler</option>
+                                    @foreach (var category in (IEnumerable<EntityLayer.Concrete.Category>)ViewBag.Categories)
+                                    {
+                                        <option value="@category.CategoryId">@category.Name</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn dorne-btn">
+                                    <i class="fa fa-search pr-2" aria-hidden="true"></i> Ara
+                                </button>
+                            </form>
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Social Btn -->
+    <div class="hero-social-btn">
+        <div class="social-title d-flex align-items-center">
+            <h6 style="font-size: 14px;">Bizi Sosyal Medyada Takip Edin</h6>
+            <span></span>
+        </div>
+        <div class="social-btns">
+            <a href="#"><i class="fa fa-instagram" aria-haspopup="true"></i></a>
+            <a href="#"><i class="fa fa-twitter" aria-haspopup="true"></i></a>
+            <a href="#"><i class="fa fa-facebook" aria-haspopup="true"></i></a>
+        </div>
+    </div>
+</section>
+

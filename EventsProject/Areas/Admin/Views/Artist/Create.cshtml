@@ -1,0 +1,24 @@
+﻿@using EntityLayer.Concrete
+@model Artist
+@{
+    ViewData["Title"] = "Yeni Sanatçı Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form action="/Admin/Artist/Create" method="post">
+    <div class="form-group">
+        <label for="Name">İsim</label>
+        <input type="text" id="Name" name="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Bio">Biyografi</label>
+        <textarea id="Bio" name="Bio" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="ImageUrl">Resim URL'si</label>
+        <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ekle</button>
+</form>

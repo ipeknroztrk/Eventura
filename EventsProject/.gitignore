@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+# Visual Studio geçici dosyaları
+=======
+# Visual Studio ge�ici dosyalar�
+>>>>>>> 6993823aa7d4561dfb925d33013cbdfdd0c21ec0
+.vs/
+obj/
+bin/
+*.vsidx
+*.suo
+*.user
+*.cache
+*.dll
+*.pdb
+*.json
+*.AssemblyInfo.cs
+*.inputs
