@@ -1,36 +1,63 @@
-Eventura - Bilet Satış ve Etkinlik Yönetim Sistemi
 
-Eventura, kullanıcıların konser, tiyatro, stand-up, çocuk aktiviteleri gibi çeşitli kategorilerdeki etkinliklerin biletlerini alabileceği, kullanıcı dostu ve dinamik bir platformdur. Eventura, ziyaretçilere etkinlikleri keşfetme imkânı sunarken, kullanıcı girişiyle birlikte bilet satın alma, favorilere ekleme ve hesap yönetimi gibi fonksiyonellikler sunar. Admin paneli ise, etkinliklerin yönetimi, kullanıcı takibi ve sistemle ilgili tüm işlemleri kolayca yönetme olanağı sağlar.
 
-Proje Özellikleri
-Kullanıcı Özellikleri:
-Ziyaretçi Modu: Kullanıcılar giriş yapmadan etkinlikleri inceleyebilir, ancak bilet satın alım işlemleri için giriş yapmaları gerekmektedir.
-Kullanıcı Girişi: Giriş yaptıktan sonra kullanıcılar, etkinliklerin detaylarını görebilir ve bilet satın alabilirler.
-Favoriler: Kullanıcılar beğendikleri etkinlikleri favorilerine ekleyebilir.
-Hesap Yönetimi: Şifre değiştirme, profil güncellemeleri ve bilet geçmişine erişim sağlanabilir.
-Bilet Satın Alma: Kullanıcılar geçmişte kaydettikleri kart bilgileri ile hızlıca bilet satın alabilirler.
-İletişim: Herhangi bir sorun yaşandığında, kullanıcılar admin ile iletişim kurarak destek alabilirler.
-Admin Özellikleri:
-Etkinlik Yönetimi: Admin, etkinlikleri ekleyebilir, güncelleyebilir veya silebilir.
-Sanatçı ve Bilet Yönetimi: Etkinliklere dair sanatçı bilgileri ve bilet kategorileri üzerinde düzenlemeler yapılabilir.
-Dashboard: Admin paneli, dinamik olarak gelen mesajlar, etkinlik sayısı, kullanıcı bilgileri gibi önemli verileri takip etme olanağı sunar.
-Kullanılan Teknolojiler
-Frontend:
-Bootstrap: Responsive tasarım ve hızlı geliştirme için kullanıldı.
-HTML, CSS, JavaScript, jQuery: Temel frontend teknolojileri.
-Backend:
-ASP.NET Core MVC: Uygulamanın arka uç kısmı için güçlü ve güvenli bir altyapı sağlamak amacıyla kullanıldı.
-Veritabanı:
-PostgreSQL: Veritabanı yönetimi için tercih edildi.
-Aiven: PostgreSQL'in bulut tabanlı yönetimi sağlandı.
-Tema ve Tasarım:
-Dorne Master: Modern ve şık bir tasarım için tercih edilen tema.
-Kai Admin: Admin paneli için kullanıcı dostu ve işlevsel bir tema.
-Darkpan: Admin paneline ekstra fonksiyonellik ve stil ekleyen tema bileşeni.
-Ekstra Teknolojiler:
-Onion Architecture: Proje mimarisinde kullanılan yapı, uygulamanın ölçeklenebilirliğini artırıyor.
-EF Identity: Kullanıcı kimlik doğrulama ve yetkilendirme işlemleri için kullanıldı.
-LINQ Sorguları: Veritabanı işlemlerinde güçlü ve esnek veri sorgulama yöntemi olarak tercih edildi.
+# **Eventura - Etkinlik ve Bilet Satış Platformu**
+
+**Eventura**, kullanıcıların konser, tiyatro, stand-up, çocuk aktiviteleri gibi kategorilerdeki etkinliklerin biletlerini alabileceği bir platformdur. Kullanıcılar giriş yaptıktan sonra etkinliklerin detaylarına ulaşabilir, bilet satın alabilir ve favori etkinliklerini kaydedebilir. Admin paneli ise etkinlik, bilet, sanatçı yönetimi gibi tüm yöneticilik işlemleri için kullanılır. Admin panelinde dinamik bir dashboard ile önemli veriler izlenebilir.
+
+---
+
+## **Özellikler**
+
+### **Kullanıcılar için:**
+- **Ziyaretçi Modu**: Kullanıcılar, giriş yapmadan etkinlikleri görebilir ancak bilet satın alamazlar.
+- **Kullanıcı Girişi**: Kullanıcılar, etkinliklerin detaylarını görmek ve bilet satın almak için giriş yapmalıdır.
+- **Favoriler**: Kullanıcılar beğendikleri etkinlikleri favorilerine ekleyebilir.
+- **Hesap Yönetimi**: Profil düzenleme, şifre değiştirme, bilet geçmişi gibi işlemler yapılabilir.
+- **Bilet Satın Alma**: Kullanıcılar ödeme işlemi ile etkinlik biletlerini alabilir.
+- **İletişim**: Kullanıcılar, sorun yaşadıklarında admin ile iletişime geçebilirler.
+- **Konum**: Etkinlikler, Google Maps üzerinden harita üzerinde gösterilebilir.
+
+### **Admin Paneli için:**
+- **Etkinlik Yönetimi**: Adminler etkinlikleri ekleyip, düzenleyebilir veya silebilir.
+- **Sanatçı ve Bilet Yönetimi**: Etkinliklere ait sanatçı ve bilet bilgileri yönetilebilir.
+- **Dinamik Dashboard**: Admin panelinde etkinlik sayısı, kullanıcı sayısı gibi veriler dinamik olarak gösterilir.
+- **Kullanıcı Yönetimi**: Admin, kullanıcıları yönetebilir, güncelleyebilir veya silebilir.
+
+---
+
+## **Kullanılan Teknolojiler**
+
+- **Frontend**: 
+    - **Bootstrap**, **HTML**, **CSS**, **JavaScript**, **jQuery**
+- **Backend**:
+    - **ASP.NET Core MVC** 
+    - **Entity Framework Core** (EF)
+    - **PostgreSQL** (Veritabanı)
+- **Admin Paneli Tema**:
+    - **Dorne Master**, **Kai Admin**, **Darkpan**
+- **Google Maps API**: Etkinliklerin konumlarını harita üzerinde göstermek için.
+
+---
+
+## **Mimari ve Tasarım Desenleri**
+
+Projemizde kullanılan bazı önemli tasarım desenleri şunlardır:
+
+- **EF Design Pattern**: Veri erişimi için Entity Framework Core kullanarak iş mantığını ve veritabanı işlemlerini ayırdık.
+- **Repository Pattern**: Veritabanı işlemleri için **Generic Repository** kullanıyoruz. Bu sayede tüm veri erişim işlemleri merkezi bir yerden yönetiliyor.
+- **Onion Architecture**: Projemiz, uygulama katmanlarını net bir şekilde ayıran Onion Architecture kullanılarak yapılandırılmıştır. Bu sayede bağımlılıkları tersine çevirerek, her katmanı daha bağımsız hale getirdik.
+- **Validation Rules**: Kullanıcı ve etkinlik verilerinin doğruluğunu sağlamak için **FluentValidation** kullandık.
+- **Unit of Work Pattern**: Veritabanı işlemlerinin tutarlılığı için bu deseni kullanıyoruz. 
+
+---
+
+## **Lisans**
+
+Eventura projesi **MIT** lisansı ile lisanslanmıştır.
+
+---
+
+Bu README, **Eventura** projesinin kullanılan teknolojileri ve genel işleyişini anlatan bir özettir. Uygulama, **EF Design Pattern**, **Repository Pattern**, **Onion Architecture** gibi önemli tasarım desenlerine dayanarak geliştirilmiştir ve sürdürülebilir bir yapıya sahiptir.
 
 ![Ekran görüntüsü 2025-01-13 171352](https://github.com/user-attachments/assets/44861db2-aa6d-4751-999c-d29b30394129)
 ![Ekran görüntüsü 2025-01-13 171406](https://github.com/user-attachments/assets/a439427a-c6d5-4dca-afd3-82b4f9d31b60)
