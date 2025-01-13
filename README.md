@@ -35,7 +35,6 @@
     - **PostgreSQL** (Veritabanı)
 - **Admin Paneli Tema**:
     - **Dorne Master**, **Kai Admin**, **Darkpan**
-- **Google Maps API**: Etkinliklerin konumlarını harita üzerinde göstermek için.
 
 ---
 
@@ -46,7 +45,7 @@ Projemizde kullanılan bazı önemli tasarım desenleri şunlardır:
 - **EF Design Pattern**: Veri erişimi için Entity Framework Core kullanarak iş mantığını ve veritabanı işlemlerini ayırdık.
 - **Repository Pattern**: Veritabanı işlemleri için **Generic Repository** kullanıyoruz. Bu sayede tüm veri erişim işlemleri merkezi bir yerden yönetiliyor.
 - **Onion Architecture**: Projemiz, uygulama katmanlarını net bir şekilde ayıran Onion Architecture kullanılarak yapılandırılmıştır. Bu sayede bağımlılıkları tersine çevirerek, her katmanı daha bağımsız hale getirdik.
-- **Validation Rules**: Kullanıcı ve etkinlik verilerinin doğruluğunu sağlamak için **FluentValidation** kullandık.
+- **Validation Rules**: Kullanıcı ve etkinlik verilerinin doğruluğunu sağlamak kullandık.
 - **Unit of Work Pattern**: Veritabanı işlemlerinin tutarlılığı için bu deseni kullanıyoruz. 
 
 ---
