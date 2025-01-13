@@ -1,38 +1,36 @@
 Eventura - Bilet Satış ve Etkinlik Yönetim Sistemi
+Eventura, kullanıcıların konser, tiyatro, stand-up, çocuk aktiviteleri gibi çeşitli kategorilerdeki etkinliklerin biletlerini alabileceği, kullanıcı dostu ve dinamik bir platformdur. Eventura, ziyaretçilere etkinlikleri keşfetme imkânı sunarken, kullanıcı girişiyle birlikte bilet satın alma, favorilere ekleme ve hesap yönetimi gibi fonksiyonellikler sunar. Admin paneli ise, etkinliklerin yönetimi, kullanıcı takibi ve sistemle ilgili tüm işlemleri kolayca yönetme olanağı sağlar.
 
-Eventura, kullanıcıların konser, tiyatro, stand-up, çocuk aktiviteleri gibi farklı kategorilerdeki etkinlik biletlerini alabileceği, kullanıcı dostu bir bilet satış platformudur. Ziyaretçiler, kullanıcı girişi yapmadan sadece etkinlikleri inceleyebilirken, giriş yaptıktan sonra etkinlik detaylarını görüntüleyebilir ve bilet satın alabilirler. Ayrıca, kullanıcılar kişisel hesaplarına giriş yaparak favori biletlerini kaydedebilir, şifre değişikliği yapabilir ve bilet geçmişlerini takip edebilirler. Kullanıcılar, bir sorun yaşadıklarında ise iletişim kısmından mesaj atarak admin ile iletişime geçebilir.
-
-Admin paneli, etkinlik ve biletlerin yanı sıra sanatçı bilgileri, etkinlik kategorileri ve kullanıcı işlemleri gibi birçok yönetim fonksiyonu sunar. Admin dashboard kısmı, dinamik olarak gelen mesaj sayısı, etkinlik sayısı ve son kayıt olan kullanıcılar gibi verilere erişimi sağlar.
-
-Özellikler
+Proje Özellikleri
 Kullanıcı Özellikleri:
-Ziyaretçi Modu: Kullanıcılar, giriş yapmadan etkinlikleri görüntüleyebilir ancak bilet satın alamazlar.
-Kullanıcı Girişi: Giriş yaptıktan sonra kullanıcılar bilet alabilir, etkinlik detaylarını görüntüleyebilir.
-Favoriler: Kullanıcılar favori biletlerini kaydedebilir.
-Hesap Yönetimi: Kullanıcılar, şifre değişikliği yapabilir ve hesap bilgilerini güncelleyebilir.
-Bilet Satın Alma: Kullanıcılar, geçmişte satın aldıkları kart bilgilerini kullanarak bilet alabilir.
-İletişim: Kullanıcılar, sorun yaşadıklarında admin ile iletişim kurabilir.
+Ziyaretçi Modu: Kullanıcılar giriş yapmadan etkinlikleri inceleyebilir, ancak bilet satın alım işlemleri için giriş yapmaları gerekmektedir.
+Kullanıcı Girişi: Giriş yaptıktan sonra kullanıcılar, etkinliklerin detaylarını görebilir ve bilet satın alabilirler.
+Favoriler: Kullanıcılar beğendikleri etkinlikleri favorilerine ekleyebilir.
+Hesap Yönetimi: Şifre değiştirme, profil güncellemeleri ve bilet geçmişine erişim sağlanabilir.
+Bilet Satın Alma: Kullanıcılar geçmişte kaydettikleri kart bilgileri ile hızlıca bilet satın alabilirler.
+İletişim: Herhangi bir sorun yaşandığında, kullanıcılar admin ile iletişim kurarak destek alabilirler.
 Admin Özellikleri:
-Etkinlik Yönetimi: Admin, yeni etkinlikler ekleyebilir, mevcut etkinlikleri silebilir veya güncelleyebilir.
-Sanatçı ve Bilet Yönetimi: Admin, sanatçılar, etkinlik kategorileri ve biletler üzerinde değişiklikler yapabilir.
-Dashboard: Admin paneli, etkinlik sayısı, kullanıcı sayısı, mesaj sayısı gibi dinamik verileri görüntüler.
+Etkinlik Yönetimi: Admin, etkinlikleri ekleyebilir, güncelleyebilir veya silebilir.
+Sanatçı ve Bilet Yönetimi: Etkinliklere dair sanatçı bilgileri ve bilet kategorileri üzerinde düzenlemeler yapılabilir.
+Dashboard: Admin paneli, dinamik olarak gelen mesajlar, etkinlik sayısı, kullanıcı bilgileri gibi önemli verileri takip etme olanağı sunar.
 Kullanılan Teknolojiler
 Frontend:
-Bootstrap: Responsive tasarım için kullanıldı.
+Bootstrap: Responsive tasarım ve hızlı geliştirme için kullanıldı.
 HTML, CSS, JavaScript, jQuery: Temel frontend teknolojileri.
 Backend:
-ASP.NET Core MVC: Uygulamanın arka uç kısmı için kullanıldı.
+ASP.NET Core MVC: Uygulamanın arka uç kısmı için güçlü ve güvenli bir altyapı sağlamak amacıyla kullanıldı.
 Veritabanı:
 PostgreSQL: Veritabanı yönetimi için tercih edildi.
-Aiven: PostgreSQL'in bulut tabanlı yönetimi için kullanıldı.
+Aiven: PostgreSQL'in bulut tabanlı yönetimi sağlandı.
 Tema ve Tasarım:
-Dorne Master: Projede kullanılan tema.
-Kai Admin: Admin paneli için kullanılan tema.
-Darkpan: Diğer admin panelleri ve tema bileşenleri.
+Dorne Master: Modern ve şık bir tasarım için tercih edilen tema.
+Kai Admin: Admin paneli için kullanıcı dostu ve işlevsel bir tema.
+Darkpan: Admin paneline ekstra fonksiyonellik ve stil ekleyen tema bileşeni.
 Ekstra Teknolojiler:
-Onion Architecture: Projenin mimarisi için kullanıldı.
-EF Identity: Kullanıcı kimlik doğrulama ve yönetimi için kullanıldı.
-LINQ Sorguları: Veritabanı işlemleri için kullanıldı.
+Onion Architecture: Proje mimarisinde kullanılan yapı, uygulamanın ölçeklenebilirliğini artırıyor.
+EF Identity: Kullanıcı kimlik doğrulama ve yetkilendirme işlemleri için kullanıldı.
+LINQ Sorguları: Veritabanı işlemlerinde güçlü ve esnek veri sorgulama yöntemi olarak tercih edildi.
+
 ![Ekran görüntüsü 2025-01-13 171352](https://github.com/user-attachments/assets/44861db2-aa6d-4751-999c-d29b30394129)
 ![Ekran görüntüsü 2025-01-13 171406](https://github.com/user-attachments/assets/a439427a-c6d5-4dca-afd3-82b4f9d31b60)
 ![Ekran görüntüsü 2025-01-13 171517](https://github.com/user-attachments/assets/3f81d9cc-d66f-4cf8-b3d3-7a16f4562f7e)
