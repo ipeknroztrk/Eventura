@@ -1,4 +1,5 @@
 Eventura - Bilet Satış ve Etkinlik Yönetim Sistemi
+
 Eventura, kullanıcıların konser, tiyatro, stand-up, çocuk aktiviteleri gibi farklı kategorilerdeki etkinlik biletlerini alabileceği, kullanıcı dostu bir bilet satış platformudur. Ziyaretçiler, kullanıcı girişi yapmadan sadece etkinlikleri inceleyebilirken, giriş yaptıktan sonra etkinlik detaylarını görüntüleyebilir ve bilet satın alabilirler. Ayrıca, kullanıcılar kişisel hesaplarına giriş yaparak favori biletlerini kaydedebilir, şifre değişikliği yapabilir ve bilet geçmişlerini takip edebilirler. Kullanıcılar, bir sorun yaşadıklarında ise iletişim kısmından mesaj atarak admin ile iletişime geçebilir.
 
 Admin paneli, etkinlik ve biletlerin yanı sıra sanatçı bilgileri, etkinlik kategorileri ve kullanıcı işlemleri gibi birçok yönetim fonksiyonu sunar. Admin dashboard kısmı, dinamik olarak gelen mesaj sayısı, etkinlik sayısı ve son kayıt olan kullanıcılar gibi verilere erişimi sağlar.
